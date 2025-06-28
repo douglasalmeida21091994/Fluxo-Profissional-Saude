@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOS Simples Saúde - Ficha de Atendimento</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --accent: #f72585;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #ef233c;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --bg-light: #f5f7fa;
+            --sidebar-width: 280px;
+            --sidebar-collapsed-width: 80px;
+            --header-height: 70px;
+            --card-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            overflow-x: hidden;
+        }
+
+        /* Layout Principal */
+        .main-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: white;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-collapsed {
+            transform: translateX(calc(-1 * (var(--sidebar-width) - var(--sidebar-collapsed-width))));
+        }
+
+        .sidebar-header {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar-logo {
+            height: 30px;
+            transition: var(--transition);
+        }
+
+        .sidebar-menu {
+            padding: 15px 0;
+        }
+
+        .sidebar-menu .nav-item {
+            position: relative;
+        }
+
+        .sidebar-menu .nav-link {
+            padding: 12px 20px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            border-radius: 0;
+            transition: var(--transition);
+        }
+
+        .sidebar-menu .nav-link:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+            color: var(--primary);
+        }
+
+        .sidebar-menu .nav-link.active {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .sidebar-menu .nav-link i {
+            font-size: 1.2rem;
+            margin-right: 12px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-menu .nav-link .menu-title {
+            transition: var(--transition);
+            opacity: 1;
+        }
+
+        .sidebar-collapsed .menu-title {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+        }
+
+        /* Conteúdo Principal */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            transition: var(--transition);
+            min-height: 100vh;
+            background-color: var(--bg-light);
+        }
+
+        .sidebar-collapsed+.main-content {
+            margin-left: var(--sidebar-collapsed-width);
+        }
+
+        /* Header */
+        .main-header {
+            height: var(--header-height);
+            background: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .toggle-sidebar {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-right: 15px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .header-title {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .patient-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #e9ecef;
+            margin-left: 15px;
+        }
+
+        /* Conteúdo */
+        .content-wrapper {
+            padding: 25px;
+        }
+
+        /* Cards */
+        .glass-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: none;
+            margin-bottom: 20px;
+        }
+
+        .glass-card:hover {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            background: transparent;
+        }
+
+        .card-title {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* Componentes */
+        .form-required:after {
+            content: " *";
+            color: var(--danger);
+        }
+
+        .scrollable-container {
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .history-item {
+            border-left: 3px solid var(--primary);
+            padding-left: 15px;
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+
+        .history-item:hover {
+            transform: translateX(5px);
+        }
+
+        .badge-unit {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+        }
+
+        .authorization-card {
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            background: white;
+            margin-bottom: 15px;
+        }
+
+        .authorization-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--card-shadow);
+        }
+
+        .authorization-number {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            border: 2px solid white;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        #files-container {
+            display: flex !important;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+            margin-top: 20px;
+            max-width: 100%;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
+            scroll-snap-points-x: repeat(350px);
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            -ms-overflow-style: -ms-autohiding-scrollbar;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+        }
+
+        .file-item {
+            display: flex;
+            gap: 20px;
+            flex-direction: column;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.165);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            background: white;
+            margin-bottom: 15px;
+            max-width: 350px !important;
+            min-width: 200px !important;
+        }
+
+        /* Estilos para a área de arquivos - Versão melhorada */
+        #file-list {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        #empty-message {
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        #files-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            padding: 10px;
+            width: 100%;
+        }
+
+        .file-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid #eee;
+        }
+
+        .file-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-preview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .file-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .file-name {
+            text-align: center;
+            word-break: break-word;
+            width: 100%;
+            font-size: 0.85rem;
+        }
+
+        .btn-remove-file {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: var(--danger);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .btn-remove-file:hover {
+            opacity: 1;
+        }
+
+        /* Responsividade para telas pequenas */
+        @media (max-width: 768px) {
+            #files-container {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 10px;
+                padding: 5px;
+            }
+
+            .file-item {
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            #files-container {
+                grid-template-columns: 1fr;
+            }
+
+            .file-item {
+                flex-direction: row;
+                align-items: center;
+                padding: 10px 15px;
+            }
+
+            .file-preview {
+                flex-direction: row;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .file-icon {
+                margin-bottom: 0;
+                font-size: 1.8rem;
+            }
+
+            .file-name {
+                text-align: left;
+                flex: 1;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .file-preview {
+                gap: 10px;
+            }
+
+            .file-icon {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .toggle-sidebar {
+                display: block;
+            }
+
+            .sidebar-collapsed {
+                transform: translateX(-100%);
+            }
+
+            .sidebar-collapsed.show {
+                transform: translateX(0);
+            }
+
+            .sidebar-collapsed+.main-content {
+                margin-left: 0;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .sidebar-collapsed {
+                transform: translateX(calc(-1 * (var(--sidebar-width) - var(--sidebar-collapsed-width)));
+                }
+
+                .sidebar-collapsed.show {
+                    transform: translateX(0);
+                }
+            }
+
+            /* Animações */
+            .animate-fade-in {
+                animation: fadeIn 0.3s ease-in-out;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0; transform: translateY(10px);
+                }
+
+                to {
+                    opacity: 1; transform: translateY(0);
+                }
+            }
+    </style>
+</head>
+
+<body>
+    <div class="main-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="https://via.placeholder.com/150x50?text=SOS+Saúde" alt="Logo" class="sidebar-logo">
+            </div>
+            <div class="sidebar-menu">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#anamnese" data-bs-toggle="tab">
+                            <i class="mdi mdi-notebook-outline"></i>
+                            <span class="menu-title">Anamnese</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#prescricao" data-bs-toggle="tab">
+                            <i class="mdi mdi-pill"></i>
+                            <span class="menu-title">Prescrição</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#exames" data-bs-toggle="tab">
+                            <i class="mdi mdi-test-tube"></i>
+                            <span class="menu-title">Exames</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#atestado" data-bs-toggle="tab">
+                            <i class="mdi mdi-file-document-outline"></i>
+                            <span class="menu-title">Atestado</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#historico" data-bs-toggle="tab">
+                            <i class="mdi mdi-history"></i>
+                            <span class="menu-title">Histórico</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#autorizacoes" data-bs-toggle="tab">
+                            <i class="mdi mdi-file-check"></i>
+                            <span class="menu-title">Autorizações</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#anexos" data-bs-toggle="tab">
+                            <i class="mdi mdi-paperclip"></i>
+                            <span class="menu-title">Anexos</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="toggle-sidebar" id="toggleSidebar">
+                        <i class="mdi mdi-menu"></i>
+                    </button>
+                    <h1 class="header-title">Ficha de Atendimento</h1>
+                </div>
+                <div class="user-menu">
+                    <div class="text-end d-none d-md-block me-3">
+                        <div class="fw-bold">Dr. Rodrigo Silva</div>
+                        <small class="text-muted" id="sala-info">Sala 205 - Psicologia</small>
+                    </div>
+                    <div class="patient-avatar">
+                        <i class="mdi mdi-account-outline mdi-24px text-muted"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Conteúdo -->
+            <div class="content-wrapper">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h4 class="mb-0">Enzo Gabriel Oliveira Santos</h4>
+                        <small class="text-muted">4 anos · Masculino · Atendimento iniciado: <span
+                                id="hora-inicio"></span></small>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary me-2" id="btn-salvar">
+                            <i class="mdi mdi-content-save me-1"></i> Salvar
+                        </button>
+                        <button class="btn btn-success" id="finalizar-atendimento">
+                            <i class="mdi mdi-check-circle-outline me-1"></i> Finalizar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="patient-tabs-content">
+                    <!-- Anamnese -->
+                    <div class="tab-pane fade show active" id="anamnese" role="tabpanel">
+                        <div class="glass-card animate-fade-in">
+                            <div class="card-header">
+                                <h5 class="card-title">Anamnese</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold form-required">Anamnese e Hipótese
+                                        Diagnóstica</label>
+                                    <textarea class="form-control" rows="6"
+                                        placeholder="Descreva a anamnese e a hipótese diagnóstica..." minlength="200"
+                                        required id="txt-anamnese"></textarea>
+                                    <small class="text-muted">Mínimo 200 caracteres</small>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold form-required">Resumo Anamnese (máx. 150
+                                        caracteres)</label>
+                                    <textarea class="form-control" rows="2" maxlength="150"
+                                        placeholder="Resumo conciso da anamnese..." required id="txt-resumo"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Prescrição -->
+                    <div class="tab-pane fade" id="prescricao" role="tabpanel">
+                        <div class="glass-card animate-fade-in">
+                            <div class="card-header">
+                                <h5 class="card-title">Prescrição Médica</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Tipo de Prescrição</label>
+                                    <select class="form-select mb-3" id="tipo-prescricao">
+                                        <option value="comum">Receituário Comum</option>
+                                        <option value="controle">Receituário de Controle</option>
+                                        <option value="especial">Receituário Especial</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Medicamentos Prescritos</label>
+                                    <div id="prescricoes-container" class="scrollable-container mb-3">
+                                        <div class="prescription-item p-3 mb-3 glass-card">
+                                            <div class="row">
+                                                <div class="col-md-5 mb-2">
+                                                    <input type="text" class="form-control" placeholder="Medicamento"
+                                                        name="medicamento[]">
+                                                </div>
+                                                <div class="col-md-4 mb-2">
+                                                    <input type="text" class="form-control" placeholder="Posologia"
+                                                        name="posologia[]">
+                                                </div>
+                                                <div class="col-md-2 mb-2">
+                                                    <input type="text" class="form-control" placeholder="Via"
+                                                        name="via[]">
+                                                </div>
+                                                <div class="col-md-1 mb-2 d-flex align-items-center">
+                                                    <button class="btn btn-sm btn-danger w-100 btn-remove-prescricao">
+                                                        <i class="mdi mdi-delete"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2" id="campos-adicionais" style="display: none;">
+                                                <div class="col-md-6 mb-2">
+                                                    <input type="text" class="form-control" placeholder="Quantidade"
+                                                        name="quantidade[]">
+                                                </div>
+                                                <div class="col-md-6 mb-2">
+                                                    <input type="text" class="form-control" placeholder="CID"
+                                                        name="cid[]">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-sm btn-primary mb-0" id="add-prescricao">
+                                        <i class="mdi mdi-plus me-1"></i> Adicionar Medicamento
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary">
+                                        <i class="mdi mdi-printer me-1"></i> Imprimir Via
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Exames -->
+                    <div class="tab-pane fade" id="exames" role="tabpanel">
+                        <div class="glass-card animate-fade-in">
+                            <div class="card-header">
+                                <h5 class="card-title">Solicitação de Exames</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Indicação Clínica</label>
+                                    <textarea class="form-control" rows="3"
+                                        placeholder="Descreva a indicação clínica para os exames..."
+                                        id="txt-indicacao"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Exames Solicitados</label>
+                                    <div id="exames-container" class="scrollable-container mb-3">
+                                        <div class="d-flex mb-2">
+                                            <input type="text" class="form-control me-2" placeholder="Nome do exame"
+                                                name="exame[]">
+                                            <button class="btn btn-sm btn-danger btn-remove-exame">
+                                                <i class="mdi mdi-delete"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-sm btn-primary mb-0" id="add-exame">
+                                        <i class="mdi mdi-plus me-1"></i> Adicionar Exame
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary">
+                                        <i class="mdi mdi-printer me-1"></i> Imprimir Guia SADT
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Atestado -->
+                    <div class="tab-pane fade" id="atestado" role="tabpanel">
+                        <div class="glass-card animate-fade-in">
+                            <div class="card-header">
+                                <h5 class="card-title">Atestado Médico</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Necessidade do Paciente</label>
+                                    <textarea class="form-control" rows="3"
+                                        placeholder="Descreva a necessidade do atestado..."
+                                        id="txt-necessidade"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Quantidade de dias afastado</label>
+                                    <input type="number" class="form-control" style="width: 100px;" id="num-dias">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">CID (se aplicável)</label>
+                                    <input type="text" class="form-control" id="txt-cid">
+                                </div>
+                                <button class="btn btn-sm btn-secondary">
+                                    <i class="mdi mdi-printer me-1"></i> Imprimir Atestado
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Histórico de Atendimento -->
+                    <div class="tab-pane fade" id="historico" role="tabpanel">
+                        <div class="glass-card animate-fade-in">
+                            <div class="card-header">
+                                <h5 class="card-title">Histórico de Atendimento</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="dropdown mb-4">
+                                    <button class="btn btn-outline-primary dropdown-toggle" type="button"
+                                        id="dropdownUnidades" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-hospital-building me-2"></i> Selecione a unidade
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownUnidades">
+                                        <li><a class="dropdown-item" href="#"
+                                                data-unit="MAIS SAÚDE - UNIDADE DELMAN">MAIS SAÚDE - UNIDADE DELMAN</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#" data-unit="UNIDADE CENTRO">UNIDADE
+                                                CENTRO</a></li>
+                                        <li><a class="dropdown-item" href="#" data-unit="UNIDADE JAGUARIBE PB">UNIDADE
+                                                JAGUARIBE PB</a></li>
+                                        <li><a class="dropdown-item" href="#" data-unit="UNIDADE CAMPINA GRANDE">UNIDADE
+                                                CAMPINA GRANDE</a></li>
+                                        <li><a class="dropdown-item" href="#" data-unit="UNIDADE BARRO DURO">UNIDADE
+                                                BARRO DURO</a></li>
+                                    </ul>
+                                </div>
+
+                                <div id="historico-content">
+                                    <div class="timeline">
+                                        <div class="timeline-item">
+                                            <div class="glass-card p-3 mb-3">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <span class="badge-unit">MAIS SAÚDE - UNIDADE DELMAN</span>
+                                                    <small class="text-muted">15/06/2025 - 14:30</small>
+                                                </div>
+                                                <h5>Dr. Carlos Silva</h5>
+                                                <p class="text-muted mb-2">Pediatria</p>
+                                                <div class="alert alert-light">
+                                                    <p class="mb-0">Paciente com quadro de febre e dor de garganta.
+                                                        Prescrito paracetamol.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="timeline-item">
+                                            <div class="glass-card p-3 mb-3">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <span class="badge-unit">UNIDADE CENTRO</span>
+                                                    <small class="text-muted">10/05/2025 - 10:15</small>
+                                                </div>
+                                                <h5>Enf. Ana Paula</h5>
+                                                <p class="text-muted mb-2">Enfermagem</p>
+                                                <div class="alert alert-light">
+                                                    <p class="mb-0">Aplicada vacina tríplice viral. Sem reações
+                                                        adversas.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="timeline-item">
+                                            <div class="glass-card p-3 mb-3">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <span class="badge-unit">UNIDADE JAGUARIBE PB</span>
+                                                    <small class="text-muted">05/04/2025 - 09:00</small>
+                                                </div>
+                                                <h5>Dr. Carlos Silva</h5>
+                                                <p class="text-muted mb-2">Pediatria</p>
+                                                <div class="alert alert-light">
+                                                    <p class="mb-0">Paciente em acompanhamento de crescimento e
+                                                        desenvolvimento. Peso: 18kg, Altura: 102cm.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Histórico de Autorizações -->
+                    <div class="tab-pane fade" id="autorizacoes" role="tabpanel">
+                        <div class="glass-card animate-fade-in">
+                            <div class="card-header">
+                                <h5 class="card-title">Histórico de Autorizações</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="scrollable-container">
+                                    <div class="authorization-card p-3 mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="authorization-number">#AUT-2025-0001</span>
+                                            <small class="text-muted">20/05/2025 - 15:45</small>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-2">
+                                                <p class="mb-1"><strong>Solicitante:</strong> Dr. Carlos Silva</p>
+                                                <p class="mb-1"><strong>Local de Atendimento:</strong> MAIS SAÚDE -
+                                                    UNIDADE DELMAN</p>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <p class="mb-1"><strong>Executante:</strong> Laboratório Central</p>
+                                                <p class="mb-1"><strong>Especialidade:</strong> Análises Clínicas</p>
+                                            </div>
+                                        </div>
+                                        <div class="mb-2">
+                                            <p class="mb-1"><strong>Indicação Clínica:</strong></p>
+                                            <p class="mb-0">Avaliação de quadro febril persistente</p>
+                                        </div>
+                                        <div>
+                                            <p class="mb-1"><strong>Procedimento:</strong></p>
+                                            <p class="mb-0">Hemograma completo</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="authorization-card p-3 mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="authorization-number">#AUT-2025-0002</span>
+                                            <small class="text-muted">18/04/2025 - 11:20</small>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-2">
+                                                <p class="mb-1"><strong>Solicitante:</strong> Dr. Carlos Silva</p>
+                                                <p class="mb-1"><strong>Local de Atendimento:</strong> UNIDADE CENTRO
+                                                </p>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <p class="mb-1"><strong>Executante:</strong> Clínica Otorrino</p>
+                                                <p class="mb-1"><strong>Especialidade:</strong> Otorrinolaringologia</p>
+                                            </div>
+                                        </div>
+                                        <div class="mb-2">
+                                            <p class="mb-1"><strong>Indicação Clínica:</strong></p>
+                                            <p class="mb-0">Avaliação de amígdalas aumentadas</p>
+                                        </div>
+                                        <div>
+                                            <p class="mb-1"><strong>Procedimento:</strong></p>
+                                            <p class="mb-0">Consulta especializada</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="authorization-card p-3 mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="authorization-number">#AUT-2025-0003</span>
+                                            <small class="text-muted">12/03/2025 - 14:00</small>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-2">
+                                                <p class="mb-1"><strong>Solicitante:</strong> Dr. Carlos Silva</p>
+                                                <p class="mb-1"><strong>Local de Atendimento:</strong> UNIDADE JAGUARIBE
+                                                    PB</p>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <p class="mb-1"><strong>Executante:</strong> Clínica de Fisioterapia</p>
+                                                <p class="mb-1"><strong>Especialidade:</strong> Fisioterapia</p>
+                                            </div>
+                                        </div>
+                                        <div class="mb-2">
+                                            <p class="mb-1"><strong>Indicação Clínica:</strong></p>
+                                            <p class="mb-0">Atraso motor leve</p>
+                                        </div>
+                                        <div>
+                                            <p class="mb-1"><strong>Procedimento:</strong></p>
+                                            <p class="mb-0">10 sessões de fisioterapia motora</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Anexos -->
+                    <div class="tab-pane fade" id="anexos" role="tabpanel">
+                        <div class="glass-card animate-fade-in">
+                            <div class="card-header">
+                                <h5 class="card-title">Anexos</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="file-upload p-5 text-center mb-3" id="drop-area">
+                                    <i class="mdi mdi-cloud-upload mdi-48px text-primary mb-3"></i>
+                                    <h5>Arraste e solte arquivos aqui</h5>
+                                    <p class="text-muted">ou</p>
+                                    <button class="btn btn-primary" id="browse-btn">
+                                        <i class="mdi mdi-folder-open me-1"></i> Selecione arquivos
+                                    </button>
+                                    <input type="file" id="fileElem" multiple accept="image/*,.pdf,.doc,.docx"
+                                        style="display:none">
+                                </div>
+
+                                <div id="file-list">
+                                    <div class="alert alert-info" id="empty-message">
+                                        <i class="mdi mdi-information-outline me-2"></i>
+                                        Nenhum arquivo anexado ainda.
+                                    </div>
+                                    <div id="files-container" style="display: none;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            // Configuração inicial
+            const now = new Date();
+            $('#hora-inicio').text(now.toLocaleString('pt-BR'));
+
+            // Toggle sidebar
+            $('#toggleSidebar').click(function () {
+                $('#sidebar').toggleClass('show');
+            });
+
+            // Fechar sidebar ao clicar em um item (em telas pequenas)
+            $('.sidebar-menu .nav-link').click(function () {
+                if ($(window).width() < 992) {
+                    $('#sidebar').removeClass('show');
+                }
+            });
+
+            // Controle do tipo de prescrição
+            $('#tipo-prescricao').change(function () {
+                if ($(this).val() === 'controle' || $(this).val() === 'especial') {
+                    $('.prescription-item #campos-adicionais').show();
+                } else {
+                    $('.prescription-item #campos-adicionais').hide();
+                }
+            });
+
+            // Upload de arquivos
+            const dropArea = document.getElementById('drop-area');
+            const fileInput = document.getElementById('fileElem');
+            const browseBtn = document.getElementById('browse-btn');
+            const filesContainer = document.getElementById('files-container');
+            const emptyMessage = document.getElementById('empty-message');
+
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight() {
+                dropArea.classList.add('dragover');
+            }
+
+            function unhighlight() {
+                dropArea.classList.remove('dragover');
+            }
+
+            dropArea.addEventListener('drop', handleDrop, false);
+            browseBtn.addEventListener('click', () => fileInput.click());
+
+            fileInput.addEventListener('change', function () {
+                handleFiles(this.files);
+            });
+
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFiles(files);
+            }
+
+            function handleFiles(files) {
+                if (files.length > 0) {
+                    emptyMessage.style.display = 'none';
+                    filesContainer.style.display = 'block';
+
+                    for (let i = 0; i < files.length; i++) {
+                        addFileToContainer(files[i]);
+                    }
+                }
+            }
+
+            function addFileToContainer(file) {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+
+                const filePreview = document.createElement('div');
+                filePreview.className = 'd-flex flex-column align-items-center';
+
+                const icon = document.createElement('i');
+                icon.className = 'mdi mdi-file-outline mdi-36px text-primary mb-1';
+
+                const fileName = document.createElement('span');
+                fileName.className = 'text-truncate';
+                fileName.style.maxWidth = '100px';
+                fileName.textContent = file.name;
+
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'btn btn-danger btn-sm btn-remove-file';
+                removeBtn.innerHTML = '<i class="mdi mdi-close"></i>';
+                removeBtn.addEventListener('click', function () {
+                    fileItem.remove();
+                    if (filesContainer.children.length === 0) {
+                        emptyMessage.style.display = 'block';
+                        filesContainer.style.display = 'none';
+                    }
+                });
+
+                filePreview.appendChild(icon);
+                filePreview.appendChild(fileName);
+                fileItem.appendChild(filePreview);
+                fileItem.appendChild(removeBtn);
+                filesContainer.appendChild(fileItem);
+            }
+
+            // Adicionar prescrição
+            $('#add-prescricao').click(function () {
+                const tipoPrescricao = $('#tipo-prescricao').val();
+                const newItem = $(`
+                    <div class="prescription-item p-3 mb-3 glass-card animate__animated animate__fadeIn">
+                        <div class="row">
+                            <div class="col-md-5 mb-2">
+                                <input type="text" class="form-control" placeholder="Medicamento" name="medicamento[]">
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <input type="text" class="form-control" placeholder="Posologia" name="posologia[]">
+                            </div>
+                            <div class="col-md-2 mb-2">
+                                <input type="text" class="form-control" placeholder="Via" name="via[]">
+                            </div>
+                            <div class="col-md-1 mb-2 d-flex align-items-center">
+                                <button class="btn btn-sm btn-danger w-100 btn-remove-prescricao">
+                                    <i class="mdi mdi-delete"></i>
+                                </button>
+                            </div>
+                        </div>
+                        ${tipoPrescricao === 'controle' || tipoPrescricao === 'especial' ?
+                        `<div class="row mt-2" id="campos-adicionais">
+                            <div class="col-md-6 mb-2">
+                                <input type="text" class="form-control" placeholder="Quantidade" name="quantidade[]">
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <input type="text" class="form-control" placeholder="CID" name="cid[]">
+                            </div>
+                        </div>` : ''}
+                    </div>
+                `);
+
+                $('#prescricoes-container').append(newItem);
+                $('#prescricoes-container').scrollTop($('#prescricoes-container')[0].scrollHeight);
+            });
+
+            // Adicionar exame
+            $('#add-exame').click(function () {
+                const newItem = $(`
+                    <div class="d-flex mb-2 animate__animated animate__fadeIn">
+                        <input type="text" class="form-control me-2" placeholder="Nome do exame" name="exame[]">
+                        <button class="btn btn-sm btn-danger btn-remove-exame">
+                            <i class="mdi mdi-delete"></i>
+                        </button>
+                    </div>
+                `);
+
+                $('#exames-container').append(newItem);
+                $('#exames-container').scrollTop($('#exames-container')[0].scrollHeight);
+            });
+
+            // Remover prescrição
+            $(document).on('click', '.btn-remove-prescricao', function () {
+                $(this).closest('.prescription-item').addClass('animate__fadeOut');
+                setTimeout(() => {
+                    $(this).closest('.prescription-item').remove();
+                }, 500);
+            });
+
+            // Remover exame
+            $(document).on('click', '.btn-remove-exame', function () {
+                $(this).closest('.d-flex').addClass('animate__fadeOut');
+                setTimeout(() => {
+                    $(this).closest('.d-flex').remove();
+                }, 500);
+            });
+
+            // Filtro por unidade no histórico
+            $('.dropdown-unit .dropdown-item').click(function (e) {
+                e.preventDefault();
+                const unit = $(this).data('unit');
+                $('.dropdown-unit .btn').html(`<i class="mdi mdi-hospital-building me-2"></i> ${unit}`);
+
+                // Aqui você implementaria a filtragem real dos itens por unidade
+                // Por enquanto, apenas simulamos destacando os itens da unidade selecionada
+                $('.badge-unit').parent().parent().show();
+                if (unit !== "Todas as unidades") {
+                    $('.badge-unit').each(function () {
+                        if ($(this).text() !== unit) {
+                            $(this).parent().parent().hide();
+                        }
+                    });
+                }
+            });
+
+            // Salvar dados
+            $('#btn-salvar').click(function () {
+                // Validar campos obrigatórios
+                const anamnese = $('#txt-anamnese').val();
+                const resumo = $('#txt-resumo').val();
+
+                if (anamnese.length < 200 || resumo.length === 0) {
+                    Swal.fire({
+                        title: 'Campos obrigatórios',
+                        text: 'Por favor, preencha todos os campos obrigatórios da anamnese',
+                        icon: 'warning',
+                        confirmButtonColor: '#4361ee'
+                    });
+                    return;
+                }
+
+                // Coletar todos os dados do formulário
+                const formData = {
+                    anamnese: anamnese,
+                    resumo: resumo,
+                    prescricao: {
+                        tipo: $('#tipo-prescricao').val(),
+                        medicamentos: []
+                    },
+                    exames: {
+                        indicacao: $('#txt-indicacao').val(),
+                        lista: []
+                    },
+                    atestado: {
+                        necessidade: $('#txt-necessidade').val(),
+                        dias: $('#num-dias').val(),
+                        cid: $('#txt-cid').val()
+                    },
+                    anexos: []
+                };
+
+                // Coletar medicamentos
+                $('.prescription-item').each(function () {
+                    const medicamento = {
+                        nome: $(this).find('input[name="medicamento[]"]').val(),
+                        posologia: $(this).find('input[name="posologia[]"]').val(),
+                        via: $(this).find('input[name="via[]"]').val(),
+                        quantidade: $(this).find('input[name="quantidade[]"]').val(),
+                        cid: $(this).find('input[name="cid[]"]').val()
+                    };
+                    formData.prescricao.medicamentos.push(medicamento);
+                });
+
+                // Coletar exames
+                $('input[name="exame[]"]').each(function () {
+                    if ($(this).val()) {
+                        formData.exames.lista.push($(this).val());
+                    }
+                });
+
+                // Coletar anexos (nomes dos arquivos)
+                $('#files-container .file-item').each(function () {
+                    formData.anexos.push($(this).find('span').text());
+                });
+
+                // Exibir no console para debug
+                console.log("Dados para envio AJAX:");
+                console.log(JSON.stringify(formData, null, 2));
+
+                // Simular envio AJAX
+                Swal.fire({
+                    title: 'Salvando dados...',
+                    html: 'Por favor, aguarde enquanto os dados são salvos.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+
+                        // Simular requisição AJAX
+                        setTimeout(() => {
+                            Swal.fire({
+                                title: 'Dados salvos com sucesso!',
+                                icon: 'success',
+                                confirmButtonColor: '#4361ee'
+                            });
+                        }, 1500);
+                    }
+                });
+            });
+
+            // Finalizar atendimento
+            $('#finalizar-atendimento').click(function () {
+                // Validar campos obrigatórios
+                const anamnese = $('#txt-anamnese').val();
+                const resumo = $('#txt-resumo').val();
+
+                if (anamnese.length < 200 || resumo.length === 0) {
+                    Swal.fire({
+                        title: 'Campos obrigatórios',
+                        text: 'Por favor, preencha todos os campos obrigatórios da anamnese',
+                        icon: 'warning',
+                        confirmButtonColor: '#4361ee'
+                    });
+                    return;
+                }
+
+                Swal.fire({
+                    title: 'Finalizar Atendimento',
+                    html: 'Tem certeza que deseja finalizar o atendimento?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sim, finalizar',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonColor: '#4361ee'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Primeiro salva os dados
+                        $('#btn-salvar').click();
+
+                        // Depois redireciona (na vida real, você faria isso no callback do AJAX)
+                        setTimeout(() => {
+                            window.location.href = 'atendimento.html';
+                        }, 2000);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
