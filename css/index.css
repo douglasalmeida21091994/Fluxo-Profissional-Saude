@@ -6,22 +6,6 @@
   align-items: center;
 }
 
-/* Card de autenticação */
-.auth-card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
-  padding: 2.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  transition: all 0.3s ease;
-}
-
-.auth-card:hover {
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.25);
-  transform: translateY(-2px);
-}
-
 /* Cabeçalho do card */
 .auth-header {
   text-align: center;
@@ -194,12 +178,12 @@ button.btn.btn-primary.btn-auth {
 }
 
 /* Ajuste no card para acomodar o cabeçalho */
-.auth-card {
+/* .auth-card {
   padding: 1.5rem 2rem 2rem;
-}
+} */
 
 /* Responsividade */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .auth-card {
     padding: 1.5rem;
   }
@@ -209,4 +193,236 @@ button.btn.btn-primary.btn-auth {
     height: 70px;
     font-size: 2rem;
   }
+} */
+
+/* Adicione estas regras ao seu CSS existente */
+
+.auth-card {
+  position: relative;
+  overflow: hidden; /* Para conter o pseudo-elemento */
+  z-index: 1; /* Garante que o conteúdo fique acima da borda */
+}
+
+/* Cria um pseudo-elemento para a borda animada */
+.auth-card::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  z-index: -1;
+  border-radius: 19px; /* 16px do card + 3px da borda */
+  background: linear-gradient(
+    45deg,
+    var(--primary),
+    var(--accent),
+    var(--success),
+    var(--primary)
+  );
+  background-size: 300% 300%;
+  opacity: 0;
+  transition: opacity 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efeito quando qualquer campo do formulário tem foco */
+.auth-form input:focus ~ .auth-card::before,
+.auth-form select:focus ~ .auth-card::before,
+.auth-form input:focus ~ .auth-card::before,
+.auth-form select:focus ~ .auth-card::before {
+  opacity: 1;
+  animation: gradientBorder 3s ease infinite;
+  box-shadow: 0 0 15px rgba(94, 96, 213, 0.3);
+}
+
+/* Animações */
+@keyframes gradientBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Ajuste para o estado de foco nos campos */
+.form-control:focus,
+.form-select:focus {
+  border-color: transparent !important; /* Remove a borda padrão */
+  background-color: white;
+}
+
+/* Ajuste para garantir que o ícone não fique atrás da borda */
+.input-group-icon {
+  z-index: 10;
+}
+
+/* Melhoria na transição */
+.auth-card::before {
+  transition: opacity 0.5s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+/* TESTEEEEEEEEEEEEEEEEE */
+
+body {
+  font-family: "Poppins", sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  color: #333;
+}
+
+/* Efeito de partículas */
+#particles-js {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, var(--primary) 0%, #2575fc 100%);
+}
+
+/* Efeito de gradiente animado no fundo */
+body::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  z-index: 1;
+  background: linear-gradient(
+    45deg,
+    rgba(106, 17, 203, 0.8) 0%,
+    rgba(156, 39, 176, 0.6) 50%,
+    rgba(106, 17, 203, 0.8) 100%
+  );
+  background-size: 200% 200%;
+  animation: gradientBG 15s ease infinite;
+  opacity: 0.7;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.auth-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  z-index: 10;
+  overflow: hidden;
+}
+
+.auth-card::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  z-index: -1;
+  border-radius: 20px;
+  background: linear-gradient(
+    45deg,
+    var(--primary),
+    var(--accent),
+    var(--light-purple),
+    var(--primary)
+  );
+  background-size: 300% 300%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.auth-card.active-border::before {
+  opacity: 1;
+  animation: gradientBorder 3s ease infinite;
+}
+
+@keyframes gradientBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Restante do seu CSS permanece igual */
+.professional-header {
+  background: rgba(106, 17, 203, 0.1);
+  border-left: 4px solid var(--primary);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.professional-avatar i {
+  font-size: 3rem;
+  color: var(--primary);
+  margin-right: 1rem;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
+  border-radius: 50%;
+  color: white;
+  font-size: 2.5rem;
+  box-shadow: 0 4px 12px rgba(106, 17, 203, 0.3);
+}
+
+.btn-auth {
+  background-color: var(--primary);
+  border: none;
+}
+
+.btn-auth:hover {
+  background-color: var(--primary-dark);
 }
