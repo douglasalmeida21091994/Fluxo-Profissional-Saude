@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOS Simples Saúde - Agenda Profissional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/agenda_prof.css">
+    <link rel="stylesheet" href="./css/atendimento.css">
+
+</head>
+
+<body>
+    <div class="main-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="https://via.placeholder.com/150x50?text=SOS+Saúde" alt="Logo" class="sidebar-logo">
+            </div>
+            <div class="sidebar-menu">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="atendimento.html">
+                            <i class="mdi mdi-view-dashboard"></i>
+                            <span>Painel de Atendimento</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="agenda_prof.html">
+                            <i class="mdi mdi-calendar-clock"></i>
+                            <span>Agenda</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="mdi mdi-account-group"></i>
+                            <span>Pacientes</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="mdi mdi-file-document-outline"></i>
+                            <span>Documentos</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="mdi mdi-chart-bar"></i>
+                            <span>Relatórios</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="mdi mdi-cog"></i>
+                            <span>Configurações</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="toggle-sidebar" id="toggleSidebar">
+                        <i class="mdi mdi-menu"></i>
+                    </button>
+                    <h1 class="header-title">Agenda Profissional</h1>
+                </div>
+                <div class="user-menu">
+                    <div class="text-end d-none d-md-block me-3">
+                        <div class="fw-bold">Dr. Rodrigo Silva</div>
+                        <small class="text-muted" id="sala-info">Sala 205 - Psicologia</small>
+                    </div>
+                    <div class="user-avatar">
+                        <i class="mdi mdi-account-outline mdi-24px text-muted"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Conteúdo -->
+            <div class="content-wrapper p-4">
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4 class="mb-0">Agenda de Consultas</h4>
+                                <small class="text-muted">Visualize e gerencie seus agendamentos</small>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary" id="btn-novo-agendamento">
+                                    <i class="mdi mdi-plus-circle-outline me-1"></i> Novo Agendamento
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white"><i class="mdi mdi-magnify"></i></span>
+                            <input type="text" class="form-control" id="busca-paciente"
+                                placeholder="Buscar paciente...">
+                            <button class="btn btn-primary" type="button" id="btn-buscar-paciente">
+                                <i class="mdi mdi-magnify me-1"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!-- Visualização Calendário -->
+                        <div class="glass-card animate-fade-in mb-4" id="calendar-view">
+                            <div id="calendar"></div>
+                        </div>
+
+                        <!-- Visualização Lista -->
+                        <div class="glass-card animate-fade-in" id="list-view">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">Agendamentos</h5>
+                                <div class="text-muted" id="period-indicator">Mostrando: Hoje</div>
+                            </div>
+                            <div class="card-body" id="appointments-container">
+                                <!-- Os agendamentos serão carregados aqui via JS -->
+                                <div class="text-center py-5">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Carregando...</span>
+                                    </div>
+                                    <p class="mt-2">Carregando agendamentos...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Novo Agendamento -->
+    <div class="modal fade" id="modalNovoAgendamento" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Novo Agendamento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-agendamento">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Paciente</label>
+                                <select class="form-select" required>
+                                    <option value="">Selecione um paciente</option>
+                                    <option>ENZO GABRIEL OLIVEIRA SANTOS</option>
+                                    <option>MARIA EDUARDA OLIVEIRA</option>
+                                    <option>IGOR GUSTAVO MARTINS</option>
+                                    <option>RYAN PIETRO NASCIMENTO</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Tipo de Consulta</label>
+                                <select class="form-select" required>
+                                    <option value="">Selecione o tipo</option>
+                                    <option>Psicopedagogia</option>
+                                    <option>Psicologia</option>
+                                    <option>Avaliação</option>
+                                    <option>Retorno</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Data</label>
+                                <input type="date" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Horário</label>
+                                <input type="time" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Duração (minutos)</label>
+                                <select class="form-select">
+                                    <option>30</option>
+                                    <option selected>45</option>
+                                    <option>60</option>
+                                    <option>90</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Status</label>
+                                <select class="form-select">
+                                    <option selected>Confirmado</option>
+                                    <option>Pendente</option>
+                                    <option>Cancelado</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Observações</label>
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btn-salvar-agendamento">
+                        <i class="mdi mdi-content-save me-1"></i> Salvar Agendamento
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Detalhes do Agendamento -->
+    <div class="modal fade" id="modalDetalhesAgendamento" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detalhes do Agendamento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="patient-avatar me-3">
+                            <i class="mdi mdi-account-outline mdi-36px text-primary"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="patient-name mb-1" id="modal-paciente-nome">ENZO GABRIEL OLIVEIRA SANTOS</h6>
+                            <div class="d-flex justify-content-between">
+                                <small class="patient-info" id="modal-paciente-info">Psicopedagogia - 4 anos</small>
+                                <span class="badge bg-success" id="modal-paciente-status">Confirmado</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <h6 class="text-muted mb-2">Detalhes da Consulta</h6>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Data:</span>
+                            <strong id="modal-consulta-data">27/06/2023</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Horário:</span>
+                            <strong id="modal-consulta-horario">08:30 - 09:15</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Duração:</span>
+                            <strong id="modal-consulta-duracao">45 minutos</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Sala:</span>
+                            <strong id="modal-consulta-sala">Sala 205</strong>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <h6 class="text-muted mb-2">Observações</h6>
+                        <p id="modal-consulta-observacoes">Paciente com necessidade de avaliação psicopedagógica
+                            completa.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="mdi mdi-close me-1"></i> Fechar
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" id="btn-editar-agendamento">
+                        <i class="mdi mdi-pencil me-1"></i> Editar
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btn-iniciar-atendimento">
+                        <i class="mdi mdi-play-circle-outline me-1"></i> Iniciar Atendimento
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/pt-br.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            // Dados de exemplo - substituir por chamada AJAX no futuro
+            const appointmentsData = [
+                {
+                    id: 1,
+                    patient: "ENZO GABRIEL OLIVEIRA SANTOS",
+                    type: "Psicopedagogia",
+                    age: "4 anos",
+                    date: new Date(new Date().setHours(8, 30, 0)),
+                    duration: 45,
+                    status: "confirmed",
+                    notes: "Paciente com necessidade de avaliação psicopedagógica completa."
+                },
+                {
+                    id: 2,
+                    patient: "MARIA EDUARDA OLIVEIRA",
+                    type: "Psicopedagogia",
+                    age: "5 anos",
+                    date: new Date(new Date().setHours(10, 15, 0)),
+                    duration: 45,
+                    status: "confirmed",
+                    notes: "Retorno para avaliação de progresso."
+                },
+                {
+                    id: 3,
+                    patient: "IGOR GUSTAVO MARTINS",
+                    type: "Psicopedagogia",
+                    age: "5 anos",
+                    date: new Date(new Date().setHours(14, 0, 0)),
+                    duration: 45,
+                    status: "pending",
+                    notes: "Primeira consulta - encaminhamento escolar."
+                },
+                {
+                    id: 4,
+                    patient: "RYAN PIETRO NASCIMENTO",
+                    type: "Psicopedagogia",
+                    age: "7 anos",
+                    date: new Date(new Date().setDate(new Date().getDate() + 1)),
+                    duration: 60,
+                    status: "confirmed",
+                    notes: "Avaliação completa - suspeita de TDAH."
+                },
+                {
+                    id: 5,
+                    patient: "LUCAS GABRIEL SILVA",
+                    type: "Psicologia",
+                    age: "8 anos",
+                    date: new Date(new Date().setDate(new Date().getDate() + 2)),
+                    duration: 30,
+                    status: "confirmed",
+                    notes: "Acompanhamento semanal."
+                },
+                {
+                    id: 6,
+                    patient: "INGO SAMUEL DANTAS",
+                    type: "Psicopedagogia",
+                    age: "6 anos",
+                    date: new Date(new Date().setDate(new Date().getDate() + 3)),
+                    duration: 45,
+                    status: "pending",
+                    notes: "Retorno para reavaliação."
+                },
+                {
+                    id: 7,
+                    patient: "ENZO GABRIEL OLIVEIRA SANTOS",
+                    type: "Psicopedagogia",
+                    age: "4 anos",
+                    date: new Date(new Date().setDate(new Date().getDate() + 7)),
+                    duration: 45,
+                    status: "confirmed",
+                    notes: "Sessão de acompanhamento."
+                }
+            ];
+
+            // Estado da aplicação
+            const state = {
+                currentPeriod: 'day',
+                currentPatientFilter: '',
+                appointments: [...appointmentsData]
+            };
+
+            // Inicializa o calendário
+            function initCalendar() {
+                const calendarEl = document.getElementById('calendar');
+                const calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    locale: 'pt-br',
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    },
+                    events: state.appointments.map(appointment => ({
+                        title: `${appointment.patient.split(' ')[0]} - ${appointment.type}`,
+                        start: appointment.date,
+                        end: new Date(appointment.date.getTime() + appointment.duration * 60000),
+                        backgroundColor: getStatusColor(appointment.status),
+                        borderColor: getStatusColor(appointment.status),
+                        extendedProps: {
+                            appointmentData: appointment
+                        }
+                    })),
+                    eventClick: function (info) {
+                        showAppointmentDetails(info.event.extendedProps.appointmentData);
+                    },
+                    dateClick: function (info) {
+                        $('#modalNovoAgendamento').modal('show');
+                    }
+                });
+                calendar.render();
+                return calendar;
+            }
+
+            const calendar = initCalendar();
+
+            // Função para obter cor baseada no status
+            function getStatusColor(status) {
+                switch (status) {
+                    case 'confirmed': return '#4361ee';
+                    case 'pending': return '#f8961e';
+                    case 'canceled': return '#ef233c';
+                    default: return '#6c757d';
+                }
+            }
+
+            // Função para obter texto do status
+            function getStatusText(status) {
+                switch (status) {
+                    case 'confirmed': return 'Confirmado';
+                    case 'pending': return 'Pendente';
+                    case 'canceled': return 'Cancelado';
+                    default: return 'Indefinido';
+                }
+            }
+
+            // Função para mostrar detalhes do agendamento
+            function showAppointmentDetails(appointment) {
+                $('#modal-paciente-nome').text(appointment.patient);
+                $('#modal-paciente-info').text(`${appointment.type} - ${appointment.age}`);
+                $('#modal-paciente-status').text(getStatusText(appointment.status));
+                $('#modal-paciente-status').removeClass('bg-success bg-warning bg-danger').addClass(
+                    appointment.status === 'confirmed' ? 'bg-success' :
+                        appointment.status === 'pending' ? 'bg-warning' : 'bg-danger'
+                );
+
+                $('#modal-consulta-data').text(appointment.date.toLocaleDateString('pt-BR'));
+
+                const endTime = new Date(appointment.date.getTime() + appointment.duration * 60000);
+                $('#modal-consulta-horario').text(
+                    `${appointment.date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} - ${endTime.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`
+                );
+
+                $('#modal-consulta-duracao').text(`${appointment.duration} minutos`);
+                $('#modal-consulta-sala').text('Sala 205');
+                $('#modal-consulta-observacoes').text(appointment.notes || 'Nenhuma observação cadastrada.');
+
+                // Armazena o ID do agendamento no modal para uso posterior
+                $('#modalDetalhesAgendamento').data('appointmentId', appointment.id);
+
+                $('#modalDetalhesAgendamento').modal('show');
+            }
+
+            // Função para filtrar agendamentos por período
+            function filterByPeriod(period) {
+                console.log(`Filtrando por período: ${period}`);
+                state.currentPeriod = period;
+
+                let filteredAppointments = [...appointmentsData];
+
+                // Aplica filtro de período
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                switch (period) {
+                    case 'day':
+                        filteredAppointments = filteredAppointments.filter(app => {
+                            const appDate = new Date(app.date);
+                            appDate.setHours(0, 0, 0, 0);
+                            return appDate.getTime() === today.getTime();
+                        });
+                        $('#period-indicator').text('Mostrando: Hoje');
+                        break;
+
+                    case 'week':
+                        const weekStart = new Date(today);
+                        weekStart.setDate(today.getDate() - today.getDay());
+
+                        const weekEnd = new Date(weekStart);
+                        weekEnd.setDate(weekStart.getDate() + 6);
+
+                        filteredAppointments = filteredAppointments.filter(app => {
+                            const appDate = new Date(app.date);
+                            return appDate >= weekStart && appDate <= weekEnd;
+                        });
+                        $('#period-indicator').text('Mostrando: Esta Semana');
+                        break;
+
+                    case 'month':
+                        const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+                        const monthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+                        filteredAppointments = filteredAppointments.filter(app => {
+                            const appDate = new Date(app.date);
+                            return appDate >= monthStart && appDate <= monthEnd;
+                        });
+                        $('#period-indicator').text('Mostrando: Este Mês');
+                        break;
+
+                    default:
+                        $('#period-indicator').text('Mostrando: Todos os Agendamentos');
+                }
+
+                // Aplica filtro de paciente se existir
+                if (state.currentPatientFilter) {
+                    filteredAppointments = filteredAppointments.filter(app =>
+                        app.patient.toLowerCase().includes(state.currentPatientFilter.toLowerCase())
+                    );
+                }
+
+                state.appointments = filteredAppointments;
+                renderAppointmentsList();
+                calendar.refetchEvents();
+            }
+
+            // Função para renderizar a lista de agendamentos
+            function renderAppointmentsList() {
+                const container = $('#appointments-container');
+                container.empty();
+
+                if (state.appointments.length === 0) {
+                    container.html(`
+                        <div class="text-center py-5">
+                            <i class="mdi mdi-calendar-remove-outline mdi-48px text-muted"></i>
+                            <p class="mt-3">Nenhum agendamento encontrado</p>
+                        </div>
+                    `);
+                    return;
+                }
+
+                // Agrupa por dia
+                const groupedByDay = {};
+                state.appointments.forEach(app => {
+                    const dateKey = app.date.toLocaleDateString('pt-BR');
+                    if (!groupedByDay[dateKey]) {
+                        groupedByDay[dateKey] = [];
+                    }
+                    groupedByDay[dateKey].push(app);
+                });
+
+                // Ordena os dias
+                const sortedDays = Object.keys(groupedByDay).sort((a, b) => {
+                    return new Date(a.split('/').reverse().join('-')) - new Date(b.split('/').reverse().join('-'));
+                });
+
+                // Renderiza cada dia
+                sortedDays.forEach(day => {
+                    const dayElement = $(`
+                        <div class="day-agenda">
+                            <div class="day-header">
+                                ${day} - ${new Date(day.split('/').reverse().join('-')).toLocaleDateString('pt-BR', { weekday: 'long' })}
+                            </div>
+                            <div class="day-appointments" id="day-${day.replace(/\//g, '-')}"></div>
+                        </div>
+                    `);
+
+                    const appointmentsContainer = dayElement.find('.day-appointments');
+
+                    // Ordena os agendamentos do dia por horário
+                    groupedByDay[day].sort((a, b) => a.date - b.date);
+
+                    // Adiciona cada agendamento
+                    groupedByDay[day].forEach(app => {
+                        const endTime = new Date(app.date.getTime() + app.duration * 60000);
+                        const appointmentElement = $(`
+                            <div class="appointment-card" data-appointment-id="${app.id}">
+                                <div class="appointment-time">
+                                    ${app.date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} - ${endTime.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                                </div>
+                                <div class="appointment-patient">
+                                    <h6 class="patient-name mb-1">${app.patient}</h6>
+                                    <small class="patient-info">${app.type} - ${app.age}</small>
+                                </div>
+                                <div class="appointment-actions">
+                                    <span class="badge ${app.status === 'confirmed' ? 'bg-success' : app.status === 'pending' ? 'bg-warning' : 'bg-danger'}">
+                                        ${getStatusText(app.status)}
+                                    </span>
+                                    <button class="btn btn-sm btn-outline-primary ms-2 btn-view-appointment">
+                                        <i class="mdi mdi-eye-outline"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        `);
+
+                        appointmentsContainer.append(appointmentElement);
+                    });
+
+                    container.append(dayElement);
+                });
+
+                // Adiciona eventos aos botões de visualização
+                $('.btn-view-appointment').click(function () {
+                    const appointmentId = $(this).closest('.appointment-card').data('appointment-id');
+                    const appointment = state.appointments.find(a => a.id === appointmentId);
+                    if (appointment) {
+                        showAppointmentDetails(appointment);
+                    }
+                });
+            }
+
+            // Filtros por período
+            $('[data-period]').click(function () {
+                const period = $(this).data('period');
+                $('[data-period]').removeClass('active');
+                $(this).addClass('active');
+                filterByPeriod(period);
+            });
+
+            // Busca por paciente
+            $('#btn-buscar-paciente').click(function () {
+                const searchTerm = $('#busca-paciente').val().trim();
+                console.log(`Buscando paciente: "${searchTerm}"`);
+                state.currentPatientFilter = searchTerm;
+                filterByPeriod(state.currentPeriod);
+            });
+
+            // Novo agendamento
+            $('#btn-novo-agendamento').click(function () {
+                $('#modalNovoAgendamento').modal('show');
+            });
+
+            // Salvar novo agendamento
+            $('#btn-salvar-agendamento').click(function () {
+                // Aqui você implementaria a lógica para salvar o novo agendamento
+                console.log('Salvando novo agendamento...');
+
+                Swal.fire({
+                    title: 'Agendamento salvo!',
+                    text: 'O novo agendamento foi registrado com sucesso.',
+                    icon: 'success',
+                    confirmButtonColor: '#4361ee'
+                }).then(() => {
+                    $('#modalNovoAgendamento').modal('hide');
+                    // Recarrega os agendamentos
+                    filterByPeriod(state.currentPeriod);
+                });
+            });
+
+            // Editar agendamento
+            $('#btn-editar-agendamento').click(function () {
+                const appointmentId = $('#modalDetalhesAgendamento').data('appointmentId');
+                console.log(`Editando agendamento ID: ${appointmentId}`);
+                // Aqui você implementaria a lógica para editar o agendamento
+            });
+
+            // Iniciar atendimento
+            $('#btn-iniciar-atendimento').click(function () {
+                const appointmentId = $('#modalDetalhesAgendamento').data('appointmentId');
+                console.log(`Iniciando atendimento para agendamento ID: ${appointmentId}`);
+                window.location.href = 'ficha.html';
+            });
+
+            // Toggle sidebar
+            $('#toggleSidebar').click(function () {
+                $('#sidebar').toggleClass('show');
+            });
+
+            // Fechar sidebar ao clicar fora (para telas pequenas)
+            $(document).on('click', function (e) {
+                if ($(window).width() <= 992) {
+                    if (!$(e.target).closest('#sidebar, #toggleSidebar').length) {
+                        $('#sidebar').removeClass('show');
+                    }
+                }
+            });
+
+            // Fechar sidebar ao clicar em um item do menu (para telas pequenas)
+            $('.sidebar-menu .nav-link').click(function () {
+                if ($(window).width() <= 992) {
+                    $('#sidebar').removeClass('show');
+                }
+            });
+
+            // Carrega os agendamentos iniciais
+            filterByPeriod('day');
+        });
+    </script>
+</body>
+
+</html>
