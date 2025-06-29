@@ -80,6 +80,9 @@
                     </button>
                     <h1 class="header-title">Ficha de Atendimento ~ #3587</h1>
                 </div>
+                <div class="header-center">
+                    <div id="currentDateTime" class="datetime-display"></div>
+                </div>
                 <div class="user-menu">
                     <div class="text-end d-none d-md-block me-3">
                         <div class="fw-bold">Dr. Rodrigo Silva</div>
@@ -100,11 +103,11 @@
                                 id="hora-inicio"></span></small>
                     </div>
                     <div>
-                        <button class="btn btn-primary me-2" id="btn-salvar">
+                        <!-- <button class="btn btn-primary me-2" id="btn-salvar">
                             <i class="mdi mdi-content-save me-1"></i> Salvar
-                        </button>
+                        </button> -->
                         <button class="btn btn-success" id="finalizar-atendimento">
-                            <i class="mdi mdi-check-circle-outline me-1"></i> Finalizar
+                            <i class="mdi mdi-check-circle-outline me-1"></i> Salvar e Finalizar
                         </button>
                     </div>
                 </div>
@@ -437,7 +440,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="file-upload p-5 text-center mb-3" id="drop-area">
-                                    <i class="mdi mdi-cloud-upload mdi-48px text-primary mb-3"></i>
+                                    <i class="mdi mdi-cloud-upload mdi-48px text-primary mb-3" id="upload-icon"></i>
                                     <h5>Arraste e solte arquivos aqui</h5>
                                     <p class="text-muted">ou</p>
                                     <button class="btn btn-primary" id="browse-btn">
@@ -667,133 +670,252 @@
                 }
             });
 
-            // Salvar dados
-            $('#btn-salvar').click(function () {
-                // Validar campos obrigatórios
-                const anamnese = $('#txt-anamnese').val();
-                const resumo = $('#txt-resumo').val();
+            // // Salvar dados
+            // $('#btn-salvar').click(function () {
+            //     // Validar campos obrigatórios
+            //     const anamnese = $('#txt-anamnese').val();
+            //     const resumo = $('#txt-resumo').val();
 
-                if (anamnese.length < 200 || resumo.length === 0) {
-                    Swal.fire({
-                        title: 'Campos obrigatórios',
-                        text: 'Por favor, preencha todos os campos obrigatórios da anamnese',
-                        icon: 'warning',
-                        confirmButtonColor: '#4361ee'
-                    });
-                    return;
-                }
+            //     if (anamnese.length < 200 || resumo.length === 0) {
+            //         Swal.fire({
+            //             title: 'Campos obrigatórios',
+            //             text: 'Por favor, preencha todos os campos obrigatórios da anamnese',
+            //             icon: 'warning',
+            //             confirmButtonColor: '#4361ee'
+            //         });
+            //         return;
+            //     }
 
-                // Coletar todos os dados do formulário
-                const formData = {
-                    anamnese: anamnese,
-                    resumo: resumo,
-                    prescricao: {
-                        tipo: $('#tipo-prescricao').val(),
-                        medicamentos: []
-                    },
-                    exames: {
-                        indicacao: $('#txt-indicacao').val(),
-                        lista: []
-                    },
-                    atestado: {
-                        necessidade: $('#txt-necessidade').val(),
-                        dias: $('#num-dias').val(),
-                        cid: $('#txt-cid').val()
-                    },
-                    anexos: []
-                };
 
-                // Coletar medicamentos
-                $('.prescription-item').each(function () {
-                    const medicamento = {
-                        nome: $(this).find('input[name="medicamento[]"]').val(),
-                        posologia: $(this).find('input[name="posologia[]"]').val(),
-                        via: $(this).find('input[name="via[]"]').val(),
-                        quantidade: $(this).find('input[name="quantidade[]"]').val(),
-                        cid: $(this).find('input[name="cid[]"]').val()
-                    };
-                    formData.prescricao.medicamentos.push(medicamento);
-                });
 
-                // Coletar exames
-                $('input[name="exame[]"]').each(function () {
-                    if ($(this).val()) {
-                        formData.exames.lista.push($(this).val());
-                    }
-                });
+            //     // Simular envio AJAX
+            //     Swal.fire({
+            //         title: 'Salvando dados...',
+            //         html: 'Por favor, aguarde enquanto os dados são salvos.',
+            //         allowOutsideClick: false,
+            //         didOpen: () => {
+            //             Swal.showLoading();
 
-                // Coletar anexos (nomes dos arquivos)
-                $('#files-container .file-item').each(function () {
-                    formData.anexos.push($(this).find('span').text());
-                });
-
-                // Exibir no console para debug
-                console.log("Dados para envio AJAX:");
-                console.log(JSON.stringify(formData, null, 2));
-
-                // Simular envio AJAX
-                Swal.fire({
-                    title: 'Salvando dados...',
-                    html: 'Por favor, aguarde enquanto os dados são salvos.',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-
-                        // Simular requisição AJAX
-                        setTimeout(() => {
-                            Swal.fire({
-                                title: 'Dados salvos com sucesso!',
-                                icon: 'success',
-                                confirmButtonColor: '#4361ee'
-                            });
-                        }, 1500);
-                    }
-                });
-            });
+            //             // Simular requisição AJAX
+            //             setTimeout(() => {
+            //                 Swal.fire({
+            //                     title: 'Dados salvos com sucesso!',
+            //                     icon: 'success',
+            //                     confirmButtonColor: '#4361ee'
+            //                 });
+            //             }, 1500);
+            //         }
+            //     });
+            // });
 
             // Finalizar atendimento
-            $('#finalizar-atendimento').click(function () {
-                // Validar campos obrigatórios
-                const anamnese = $('#txt-anamnese').val();
-                const resumo = $('#txt-resumo').val();
-
-                console.log('Dados da Anamnese e Hipótese Diagnóstica:');
-                console.log(anamnese);
-
-                console.log('Dados do resumo obrigatório:');
-                console.log(resumo);
-
-                if (anamnese.length < 200 || resumo.length === 0) {
-                    Swal.fire({
+            $('#finalizar-atendimento').click(async function () {
+                // 1. Validação dos campos obrigatórios
+                const camposObrigatorios = validarCamposObrigatorios();
+                if (!camposObrigatorios.validos) {
+                    await Swal.fire({
                         title: 'Campos obrigatórios',
-                        text: 'Por favor, preencha todos os campos obrigatórios da anamnese',
+                        html: camposObrigatorios.mensagem,
                         icon: 'warning',
                         confirmButtonColor: '#4361ee'
                     });
                     return;
                 }
 
-                Swal.fire({
+                // 2. Coletar todos os dados do formulário
+                const formData = coletarDadosFormulario();
+
+                // 3. Exibir dados no console para debug
+                console.log("Dados coletados para envio:", formData);
+
+                // 4. Confirmar com o usuário antes de enviar
+                const confirmacao = await Swal.fire({
                     title: 'Finalizar Atendimento',
-                    html: 'Tem certeza que deseja finalizar o atendimento?',
+                    html: 'Tem certeza que deseja finalizar o atendimento?<br><small>Todos os dados serão salvos.</small>',
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonText: 'Sim, finalizar',
                     cancelButtonText: 'Cancelar',
-                    confirmButtonColor: '#4361ee'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Primeiro salva os dados
-                        $('#btn-salvar').click();
-
-                        // Depois redireciona (na vida real, você faria isso no callback do AJAX)
-                        setTimeout(() => {
-                            window.location.href = 'atendimento.html';
-                        }, 2000);
+                    confirmButtonColor: '#4361ee',
+                    showLoaderOnConfirm: true,
+                    preConfirm: () => {
+                        return new Promise((resolve) => {
+                            // Simular salvamento inicial (na prática, seria seu AJAX)
+                            $('#btn-salvar').click();
+                            setTimeout(resolve, 500);
+                        });
                     }
                 });
+
+                if (!confirmacao.isConfirmed) {
+                    console.log('Finalização cancelada pelo usuário');
+                    return;
+                }
+
+                // 5. Processar envio dos dados (simulação)
+                try {
+                    const resultadoEnvio = await enviarDadosAtendimento(formData);
+
+                    // 6. Feedback e redirecionamento
+                    await Swal.fire({
+                        title: 'Atendimento Finalizado!',
+                        html: `O atendimento foi concluído com sucesso.<br><small>Redirecionando...</small>`,
+                        icon: 'success',
+                        timer: 1500,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    });
+
+                    window.location.href = 'atendimento.html';
+
+                } catch (error) {
+                    console.error('Erro ao finalizar atendimento:', error);
+                    await Swal.fire({
+                        title: 'Erro ao Finalizar',
+                        text: 'Ocorreu um erro ao tentar finalizar o atendimento. Por favor, tente novamente.',
+                        icon: 'error',
+                        confirmButtonColor: '#4361ee'
+                    });
+                }
             });
+
+            // Funções auxiliares
+            function validarCamposObrigatorios() {
+                const anamnese = $('#txt-anamnese').val().trim();
+                const resumo = $('#txt-resumo').val().trim();
+
+                const erros = [];
+
+                if (anamnese.length < 200) {
+                    erros.push('A anamnese deve conter pelo menos 200 caracteres');
+                }
+
+                if (resumo.length === 0) {
+                    erros.push('O resumo do atendimento é obrigatório');
+                }
+
+                return {
+                    validos: erros.length === 0,
+                    mensagem: erros.join('<br>')
+                };
+            }
+
+            function coletarDadosFormulario() {
+                // Dados básicos
+                const formData = {
+                    anamnese: $('#txt-anamnese').val().trim(),
+                    resumo: $('#txt-resumo').val().trim(),
+                    prescricao: {
+                        tipo: $('#tipo-prescricao').val(),
+                        medicamentos: coletarMedicamentos()
+                    },
+                    exames: {
+                        indicacao: $('#txt-indicacao').val().trim(),
+                        lista: coletarExames()
+                    },
+                    atestado: {
+                        necessidade: $('#txt-necessidade').val().trim(),
+                        dias: $('#num-dias').val(),
+                        cid: $('#txt-cid').val().trim()
+                    },
+                    anexos: coletarAnexos()
+                };
+
+                return formData;
+            }
+
+            function coletarMedicamentos() {
+                const medicamentos = [];
+
+                $('.prescription-item').each(function () {
+                    const $item = $(this);
+                    const medicamento = {
+                        nome: $item.find('input[name="medicamento[]"]').val(),
+                        posologia: $item.find('input[name="posologia[]"]').val(),
+                        via: $item.find('input[name="via[]"]').val(),
+                        quantidade: $item.find('input[name="quantidade[]"]').val(),
+                        cid: $item.find('input[name="cid[]"]').val()
+                    };
+
+                    // Aplicar trim() apenas se o valor existir
+                    Object.keys(medicamento).forEach(key => {
+                        if (medicamento[key] !== undefined && medicamento[key] !== null) {
+                            medicamento[key] = medicamento[key].toString().trim();
+                        } else {
+                            medicamento[key] = '';
+                        }
+                    });
+
+                    // Só adiciona se houver pelo menos o nome do medicamento
+                    if (medicamento.nome) {
+                        medicamentos.push(medicamento);
+                    }
+                });
+
+                return medicamentos;
+            }
+
+            function coletarExames() {
+                const exames = [];
+
+                $('input[name="exame[]"]').each(function () {
+                    const exame = $(this).val().trim();
+                    if (exame) exames.push(exame);
+                });
+
+                return exames;
+            }
+
+            function coletarAnexos() {
+                const anexos = [];
+
+                $('#files-container .file-item').each(function () {
+                    anexos.push($(this).find('span').text().trim());
+                });
+
+                return anexos;
+            }
+
+            // Função de simulação de envio AJAX (substituir pela real depois)
+            function enviarDadosAtendimento(formData) {
+                return new Promise((resolve, reject) => {
+                    console.log('Simulando envio AJAX...', formData);
+
+                    // Simula tempo de requisição (1-2s)
+                    const tempoAleatorio = Math.random() * 1000 + 1000;
+
+                    setTimeout(() => {
+                        // Simula 90% de chance de sucesso
+                        if (Math.random() > 0.1) {
+                            console.log('Simulação: Dados enviados com sucesso!');
+                            resolve({ success: true });
+                        } else {
+                            console.log('Simulação: Erro no envio!');
+                            reject(new Error('Erro simulado no servidor'));
+                        }
+                    }, tempoAleatorio);
+                });
+            }
         });
+
+        function updateDateTime() {
+            const now = new Date();
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            };
+            document.getElementById('currentDateTime').textContent = now.toLocaleDateString('pt-BR', options);
+        }
+
+        // Atualizar imediatamente e depois a cada segundo
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
     </script>
 </body>
 

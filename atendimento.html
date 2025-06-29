@@ -78,9 +78,10 @@
                     <button class="toggle-sidebar" id="toggleSidebar">
                         <i class="mdi mdi-menu"></i>
                     </button>
-                    <h1 class="header-title">Painel de Atendimento</h1>
+                    <h1 class="header-title">Painel de Atendimento ~ #3587</h1>
                 </div>
                 <div class="user-menu">
+                    <!-- botão para trocar sala -->
                     <button class="btn btn-outline-primary me-3" id="trocar-sala">
                         <i class="mdi mdi-door-open me-1"></i> Trocar Sala
                     </button>
@@ -98,10 +99,15 @@
             <div class="content-wrapper">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div>
-                        <h4 class="mb-0" id="data-atual">Sexta-feira, 27/06/2025</h4>
+                        <h4 class="mb-0" id="data-atual"></h4>
                         <small class="text-muted">Resumo do dia</small>
                     </div>
                     <div>
+                        <!-- atualizar pacientes com id específico -->
+                        <button class="btn btn-outline-secondary me-2" id="refresh-pacientes">
+                            <i class="mdi mdi-refresh"></i> Atualizar Pacientes
+                        </button>
+                        <!-- botão para emitir documentos -->
                         <button class="btn btn-primary" id="btn-emitir-documentos">
                             <i class="mdi mdi-file-document-outline me-1"></i> Emitir Documentos
                         </button>
@@ -161,8 +167,6 @@
                                 <div>
                                     <span class="badge bg-primary rounded-pill me-2" id="quantidade-espera">4 em
                                         espera</span>
-                                    <i class="mdi mdi-refresh refresh-btn" id="refresh-pacientes"
-                                        style="font-size: 1.2rem;"></i>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -242,7 +246,7 @@
                                     </div>
                                 </div>
                                 <div class="text-center mt-3">
-                                    <button class="btn btn-sm btn-outline-secondary">
+                                    <button class="btn btn-sm btn-outline-secondary" id="ver-historico-completo">
                                         <i class="mdi mdi-history me-1"></i> Ver histórico completo
                                     </button>
                                 </div>
@@ -556,6 +560,7 @@
 
             // Função para adicionar botão de iniciar atendimento ao primeiro paciente
             function adicionarBotaoPrimeiroPaciente() {
+                console.log('Adicionando botão de iniciar atendimento ao primeiro paciente');
                 // Remove todos os botões existentes primeiro
                 $('.patient-card .iniciar-atendimento').remove();
 
@@ -585,7 +590,7 @@
                         showCancelButton: true,
                         confirmButtonText: 'Sim, iniciar',
                         cancelButtonText: 'Cancelar',
-                        confirmButtonColor: '#4361ee'
+                        confirmButtonColor: '#5e60d5'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             window.location.href = 'ficha.html';
@@ -596,11 +601,6 @@
 
             // Chama a função quando a página carrega
             adicionarBotaoPrimeiroPaciente();
-
-            // Se você tiver um botão de refresh, chame a função novamente após atualizar
-            $('#refresh-pacientes').click(function () {
-                setTimeout(adicionarBotaoPrimeiroPaciente, 1500);
-            });
 
             // Atualiza data atual
             const dataAtual = new Date();
@@ -624,11 +624,13 @@
 
             // Atualizar lista de pacientes
             $('#refresh-pacientes').click(function () {
+                console.log('Atualizando lista de pacientes...');
+
                 setTimeout(function () {
                     atualizarBotoesAtendimento();
                 }, 1500);
                 const refreshIcon = $(this);
-                refreshIcon.addClass('refreshing');
+                // refreshIcon.addClass('refreshing');
 
                 // Simula requisição AJAX
                 setTimeout(() => {
@@ -643,6 +645,8 @@
                         refreshIcon.css('color', '');
                     }, 2000);
                 }, 1500);
+
+                setTimeout(adicionarBotaoPrimeiroPaciente, 1500);
             });
 
             // Iniciar atendimento
@@ -706,6 +710,34 @@
                 $('#modalPacientesHoje').modal('show');
             });
         });
+
+        function atualizarDataHora() {
+            const elementoData = document.getElementById('data-atual');
+            const agora = new Date();
+
+            // Formatação da data
+            const opcoesData = {
+                weekday: 'long',
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            };
+            const dataFormatada = agora.toLocaleDateString('pt-BR', opcoesData);
+
+            // Formatação da hora
+            const horas = agora.getHours().toString().padStart(2, '0');
+            const minutos = agora.getMinutes().toString().padStart(2, '0');
+            const segundos = agora.getSeconds().toString().padStart(2, '0');
+
+            // Atualiza o elemento HTML
+            elementoData.textContent = `${dataFormatada} ${horas}:${minutos}:${segundos}`;
+        }
+
+        // Atualiza imediatamente
+        atualizarDataHora();
+
+        // Atualiza a cada segundo (1000ms)
+        setInterval(atualizarDataHora, 1000);
     </script>
 </body>
 

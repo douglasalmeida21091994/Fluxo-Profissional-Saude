@@ -309,16 +309,26 @@ body {
 }
 
 /* Estilos para a área de arquivos - Versão melhorada */
-#file-list {
+.file-list {
     width: 100%;
     margin-top: 20px;
 }
+
+.file-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
 
 #empty-message {
     text-align: center;
     padding: 20px;
     margin: 0;
+    color: var(--primary-dark) !important;
+    background-color: #5e60d562 !important;
+    border-color: #5e60d51c !important;
 }
+
 
 #files-container {
     display: grid;
@@ -355,7 +365,7 @@ body {
 
 .file-icon {
     font-size: 2.5rem;
-    color: var(--primary);
+    color: var(--primary) !important;
     margin-bottom: 10px;
 }
 
@@ -392,6 +402,40 @@ body {
     min-width: 130px !important;
     margin-bottom: .5rem !important;
 }
+
+#btn-salvar, #dropdownUnidades {
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
+    background-color: transparent !important;
+}
+
+#btn-salvar:hover, #dropdownUnidades:hover {
+    background-color: var(--primary) !important;
+    color: white !important;
+}
+
+#finalizar-atendimento {
+    background-color: transparent !important;
+    color: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+
+#finalizar-atendimento:hover {
+    background-color: var(--primary) !important;
+    color: white !important;
+}
+
+#add-prescricao, #add-exame, #add-anamnese, #browse-btn, #btn-buscar-paciente {
+    background-color: var(--primary) !important;
+    color: white !important;
+    border-color: var(--primary) !important;
+}
+
+#upload-icon {
+    color: var(--primary) !important;
+}
+
+
 
 /* Responsividade para telas pequenas */
 @media (max-width: 768px) {

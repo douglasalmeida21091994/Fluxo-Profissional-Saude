@@ -293,9 +293,36 @@ body {
   transform: rotate(180deg);
 }
 
-.refreshing {
-  animation: spin 1s linear infinite;
+.iniciar-atendimento,
+#quantidade-espera {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
 }
+
+#ver-todos-pacientes,
+#trocar-sala {
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+}
+
+#btn-emitir-documentos,
+#ver-historico-completo {
+  background-color: transparent !important;
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+}
+
+#ver-todos-pacientes:hover,
+#trocar-sala:hover,
+#btn-emitir-documentos:hover,
+#ver-historico-completo:hover {
+  background-color: var(--primary) !important;
+  color: white !important;
+}
+
+/* .refreshing {
+  animation: spin 1s linear infinite;
+} */
 
 @keyframes spin {
   100% {
