@@ -6,6 +6,62 @@ $(document).ready(function () {
     once: true,
   });
 
+  // Toggle sidebar com o botão flutuante
+  $("#sidebarToggle").click(function () {
+    $("#sidebar").toggleClass("show");
+  });
+
+  // Toggle sidebar melhorado
+  $("#toggleSidebar").click(function (e) {
+    e.stopPropagation();
+    const sidebar = $("#sidebar");
+    const isShowing = sidebar.hasClass("show");
+
+    if (isShowing) {
+      // Fechar sidebar
+      anime({
+        targets: "#sidebar",
+        translateX: [0, -250],
+        duration: 300,
+        easing: "easeInOutQuad",
+        complete: function () {
+          sidebar.removeClass("show");
+        },
+      });
+    } else {
+      // Abrir sidebar
+      sidebar.addClass("show");
+      anime({
+        targets: "#sidebar",
+        translateX: [-250, 0],
+        duration: 300,
+        easing: "easeInOutQuad",
+      });
+    }
+  });
+
+  // Fechar sidebar ao clicar fora
+  $(document).click(function (e) {
+    if ($(window).width() <= 992) {
+      if (
+        !$(e.target).closest("#sidebar").length &&
+        !$(e.target).is("#toggleSidebar")
+      ) {
+        if ($("#sidebar").hasClass("show")) {
+          anime({
+            targets: "#sidebar",
+            translateX: [0, -250],
+            duration: 300,
+            easing: "easeInOutQuad",
+            complete: function () {
+              $("#sidebar").removeClass("show");
+            },
+          });
+        }
+      }
+    }
+  });
+
   // Efeito de onda nos botões
   $(".ripple").on("click", function (e) {
     var ripple = $('<span class="ripple-effect"></span>');
@@ -35,21 +91,23 @@ $(document).ready(function () {
     );
   }
 
-  // Fechar sidebar ao clicar fora (para telas pequenas)
-  $(document).on("click", function (e) {
-    if ($(window).width() <= 992) {
-      if (!$(e.target).closest("#sidebar, #toggleSidebar").length) {
-        $("#sidebar").removeClass("show");
-      }
-    }
-  });
-
   // Fechar sidebar ao clicar em um item do menu (para telas pequenas)
   $(".sidebar-menu .nav-link").click(function () {
     if ($(window).width() <= 992) {
-      $("#sidebar").removeClass("show");
+      anime({
+        targets: "#sidebar",
+        translateX: [0, -250],
+        duration: 300,
+        easing: "easeInOutQuad",
+        complete: function () {
+          $("#sidebar").removeClass("show");
+        },
+      });
     }
   });
+
+  // Restante do seu código JavaScript permanece o mesmo...
+  // (inclua todas as outras funções que você tinha antes)
 
   // Atualiza data atual
   const dataAtual = new Date();
@@ -60,11 +118,6 @@ $(document).ready(function () {
     day: "numeric",
   };
   $("#data-atual").text(dataAtual.toLocaleDateString("pt-BR", options));
-
-  // Toggle sidebar
-  $("#toggleSidebar").click(function () {
-    $("#sidebar").toggleClass("show");
-  });
 
   // Modal de documentos avulsos
   $("#btn-emitir-documentos").click(function () {
