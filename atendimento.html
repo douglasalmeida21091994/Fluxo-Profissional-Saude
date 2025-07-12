@@ -5,64 +5,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SOS Simples Saúde - Painel de Atendimento</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="./css/root.css">
-    <link rel="stylesheet" href="./css/atendimento.css">
+    <link rel="stylesheet" href="css/atendimento.css">
 </head>
 
 <body>
     <div class="main-wrapper">
-        <!-- Sidebar -->
+        <!-- Sidebar Moderno -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <img src="https://via.placeholder.com/150x50?text=SOS+Saúde" alt="Logo" class="sidebar-logo">
+                <img src="https://via.placeholder.com/200x60?text=SOS+Saúde+Pro" alt="Logo" class="sidebar-logo">
             </div>
             <div class="sidebar-menu">
                 <ul class="nav flex-column">
-                    <li class="nav-item">
+                    <li class="nav-item" data-aos="fade-right" data-aos-delay="100">
                         <a class="nav-link active" href="#">
                             <i class="mdi mdi-view-dashboard"></i>
                             <span>Painel de Atendimento</span>
                         </a>
                     </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="ficha.html">
-                            <i class="mdi mdi-notebook-outline"></i>
-                            <span>Ficha de Atendimento</span>
-                        </a>
-                    </li> -->
-                    <li class="nav-item">
+                    <li class="nav-item" data-aos="fade-right" data-aos-delay="150">
                         <a class="nav-link" href="agenda_prof.html">
                             <i class="mdi mdi-calendar-clock"></i>
-                            <span>Agenda Prof.</span>
+                            <span>Agenda Profissional</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" data-aos="fade-right" data-aos-delay="200">
                         <a class="nav-link" href="#">
                             <i class="mdi mdi-account-group"></i>
                             <span>Pacientes</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" data-aos="fade-right" data-aos-delay="250">
                         <a class="nav-link" href="#">
-                            <i class="mdi mdi-file-document-outline"></i>
+                            <i class="mdi mdi-file-document-multiple"></i>
                             <span>Documentos</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" data-aos="fade-right" data-aos-delay="300">
                         <a class="nav-link" href="#">
-                            <i class="mdi mdi-chart-bar"></i>
+                            <i class="mdi mdi-chart-areaspline"></i>
                             <span>Relatórios</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" data-aos="fade-right" data-aos-delay="350">
                         <a class="nav-link" href="#">
-                            <i class="mdi mdi-cog"></i>
+                            <i class="mdi mdi-cog-outline"></i>
                             <span>Configurações</span>
                         </a>
                     </li>
@@ -72,17 +64,16 @@
 
         <!-- Conteúdo Principal -->
         <div class="main-content">
-            <!-- Header -->
+            <!-- Header Moderno -->
             <header class="main-header">
                 <div class="header-left">
                     <button class="toggle-sidebar" id="toggleSidebar">
                         <i class="mdi mdi-menu"></i>
                     </button>
-                    <h1 class="header-title">Painel de Atendimento ~ #3587</h1>
+                    <h1 class="header-title">Painel de Atendimento <span class="text-muted">#3587</span></h1>
                 </div>
                 <div class="user-menu">
-                    <!-- botão para trocar sala -->
-                    <button class="btn btn-outline-primary me-3" id="trocar-sala">
+                    <button class="btn btn-outline-primary me-3 ripple" id="trocar-sala">
                         <i class="mdi mdi-door-open me-1"></i> Trocar Sala
                     </button>
                     <div class="text-end d-none d-md-block me-3">
@@ -90,35 +81,32 @@
                         <small class="text-muted" id="sala-info">Sala 205 - Psicologia</small>
                     </div>
                     <div class="user-avatar">
-                        <i class="mdi mdi-account-outline mdi-24px text-muted"></i>
+                        <i class="mdi mdi-account-circle mdi-24px"></i>
                     </div>
                 </div>
             </header>
 
             <!-- Conteúdo -->
-            <div class="content-wrapper">
-                <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="content-wrapper p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4" data-aos="fade-up">
                     <div>
                         <h4 class="mb-0" id="data-atual"></h4>
                         <small class="text-muted">Resumo do dia</small>
                     </div>
                     <div>
-                        <!-- atualizar pacientes com id específico -->
-                        <button class="btn btn-outline-secondary me-2" id="refresh-pacientes">
-                            <i class="mdi mdi-refresh"></i> Atualizar Pacientes
+                        <button class="btn btn-outline-secondary me-2 ripple" id="refresh-pacientes">
+                            <i class="mdi mdi-refresh"></i> Atualizar
                         </button>
-                        <!-- botão para emitir documentos -->
-                        <button class="btn btn-primary" id="btn-emitir-documentos">
+                        <button class="btn btn-primary ripple" id="btn-emitir-documentos">
                             <i class="mdi mdi-file-document-outline me-1"></i> Emitir Documentos
                         </button>
                     </div>
                 </div>
 
-                <!-- Estatísticas -->
+                <!-- Estatísticas com Animações -->
                 <div class="row mb-4">
-                    <div class="col-md-3 mb-3">
-                        <div class="glass-card stats-card animate-fade-in" data-bs-toggle="modal"
-                            data-bs-target="#modalPacientesHoje">
+                    <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="100">
+                        <div class="glass-card stats-card hover-scale">
                             <div class="stats-icon text-primary">
                                 <i class="mdi mdi-account-group"></i>
                             </div>
@@ -126,9 +114,8 @@
                             <div class="stats-label">Pacientes Hoje</div>
                         </div>
                     </div>
-                    <div class="col-md-3 mb-3">
-                        <div class="glass-card stats-card animate-fade-in" data-bs-toggle="modal"
-                            data-bs-target="#modalAtendidos">
+                    <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="200">
+                        <div class="glass-card stats-card hover-scale">
                             <div class="stats-icon text-success">
                                 <i class="mdi mdi-check-circle"></i>
                             </div>
@@ -136,9 +123,8 @@
                             <div class="stats-label">Atendidos</div>
                         </div>
                     </div>
-                    <div class="col-md-3 mb-3">
-                        <div class="glass-card stats-card animate-fade-in" data-bs-toggle="modal"
-                            data-bs-target="#modalEspera">
+                    <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="300">
+                        <div class="glass-card stats-card hover-scale">
                             <div class="stats-icon text-warning">
                                 <i class="mdi mdi-clock"></i>
                             </div>
@@ -146,26 +132,25 @@
                             <div class="stats-label">Em Espera</div>
                         </div>
                     </div>
-                    <div class="col-md-3 mb-3">
-                        <div class="glass-card stats-card animate-fade-in" data-bs-toggle="modal"
-                            data-bs-target="#modalAusentes">
+                    <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="400">
+                        <div class="glass-card stats-card hover-scale">
                             <div class="stats-icon text-danger">
                                 <i class="mdi mdi-close-circle"></i>
                             </div>
                             <div class="stats-number" id="total-ausentes">3</div>
-                            <div class="stats-label">Não Compareceram</div>
+                            <div class="stats-label">Ausentes</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <!-- Próximos Pacientes -->
-                    <div class="col-lg-8 mb-4">
-                        <div class="glass-card h-100 animate-fade-in">
+                    <!-- Próximos Pacientes com Controles -->
+                    <div class="col-lg-8 mb-4" data-aos="fade-up">
+                        <div class="glass-card h-100 hover-scale">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <h5 class="card-title mb-0">Próximos Pacientes</h5>
+                                <h5 class="card-title mb-0">Fila de Atendimento</h5>
                                 <div>
-                                    <span class="badge bg-primary rounded-pill me-2" id="quantidade-espera">4 em
+                                    <span class="badge bg-primary rounded-pill" id="quantidade-espera">4 em
                                         espera</span>
                                 </div>
                             </div>
@@ -173,7 +158,7 @@
                                 <div class="patient-card glass-card pulse mb-3" id="paciente-atual">
                                     <div class="d-flex align-items-center">
                                         <div class="patient-avatar me-3">
-                                            <i class="mdi mdi-account-outline mdi-36px text-muted"></i>
+                                            <i class="mdi mdi-account-circle mdi-36px text-primary"></i>
                                         </div>
                                         <div class="flex-grow-1">
                                             <h6 class="patient-name mb-1">ENZO GABRIEL OLIVEIRA SANTOS</h6>
@@ -183,12 +168,20 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="patient-controls">
+                                        <button class="btn btn-sm btn-primary iniciar-atendimento ripple">
+                                            <i class="mdi mdi-play-circle-outline me-1"></i> Iniciar Atendimento
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary move-btn ripple move-down">
+                                            <i class="mdi mdi-arrow-down"></i>
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <div class="patient-card glass-card mb-3">
                                     <div class="d-flex align-items-center">
                                         <div class="patient-avatar me-3">
-                                            <i class="mdi mdi-account-outline mdi-36px text-muted"></i>
+                                            <i class="mdi mdi-account-circle mdi-36px text-info"></i>
                                         </div>
                                         <div class="flex-grow-1">
                                             <h6 class="patient-name mb-1">IGOR GUSTAVO DO NASCIMENTO MARTINS</h6>
@@ -198,11 +191,62 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="patient-controls">
+                                        <button class="btn btn-sm btn-outline-secondary move-btn ripple move-up">
+                                            <i class="mdi mdi-arrow-up"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary move-btn ripple move-down">
+                                            <i class="mdi mdi-arrow-down"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="patient-card glass-card mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="patient-avatar me-3">
+                                            <i class="mdi mdi-account-circle mdi-36px text-success"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="patient-name mb-1">MARIA EDUARDA OLIVEIRA</h6>
+                                            <div class="d-flex justify-content-between">
+                                                <small class="patient-info">Psicopedagogia - 8 anos</small>
+                                                <small class="text-primary">10:45</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="patient-controls">
+                                        <button class="btn btn-sm btn-outline-secondary move-btn ripple move-up">
+                                            <i class="mdi mdi-arrow-up"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary move-btn ripple move-down">
+                                            <i class="mdi mdi-arrow-down"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="patient-card glass-card mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="patient-avatar me-3">
+                                            <i class="mdi mdi-account-circle mdi-36px text-warning"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="patient-name mb-1">LUCAS GABRIEL SILVA</h6>
+                                            <div class="d-flex justify-content-between">
+                                                <small class="patient-info">Psicopedagogia - 8 anos</small>
+                                                <small class="text-primary">08:00</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="patient-controls">
+                                        <button class="btn btn-sm btn-outline-secondary move-btn ripple move-up">
+                                            <i class="mdi mdi-arrow-up"></i>
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <div class="text-center mt-3">
-                                    <button class="btn btn-sm btn-outline-primary" id="ver-todos-pacientes">
-                                        <i class="mdi mdi-account-group me-1"></i> Ver todos os pacientes do dia
+                                    <button class="btn btn-sm btn-outline-primary ripple" id="ver-todos-pacientes">
+                                        <i class="mdi mdi-account-group me-1"></i> Ver todos os pacientes
                                     </button>
                                 </div>
                             </div>
@@ -210,15 +254,15 @@
                     </div>
 
                     <!-- Histórico Recente -->
-                    <div class="col-lg-4 mb-4">
-                        <div class="glass-card h-100 animate-fade-in">
+                    <div class="col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                        <div class="glass-card h-100 hover-scale">
                             <div class="card-header">
                                 <h5 class="card-title mb-0">Histórico Recente</h5>
                             </div>
                             <div class="card-body">
                                 <div class="timeline">
                                     <div class="timeline-item">
-                                        <div class="timeline-content">
+                                        <div class="timeline-content glass-card">
                                             <h6 class="patient-name mb-1">INGO SAMUEL DA SILVA DANTAS</h6>
                                             <div class="d-flex justify-content-between">
                                                 <small class="patient-info">Psicopedagogia - 6 anos</small>
@@ -227,7 +271,7 @@
                                         </div>
                                     </div>
                                     <div class="timeline-item">
-                                        <div class="timeline-content">
+                                        <div class="timeline-content glass-card">
                                             <h6 class="patient-name mb-1">RYAN PIETRO DA SILVA NASCIMENTO</h6>
                                             <div class="d-flex justify-content-between">
                                                 <small class="patient-info">Psicopedagogia - 7 anos</small>
@@ -236,7 +280,7 @@
                                         </div>
                                     </div>
                                     <div class="timeline-item">
-                                        <div class="timeline-content">
+                                        <div class="timeline-content glass-card">
                                             <h6 class="patient-name mb-1">MARIA EDUARDA OLIVEIRA</h6>
                                             <div class="d-flex justify-content-between">
                                                 <small class="patient-info">Psicopedagogia - 8 anos</small>
@@ -246,8 +290,8 @@
                                     </div>
                                 </div>
                                 <div class="text-center mt-3">
-                                    <button class="btn btn-sm btn-outline-secondary" id="ver-historico-completo">
-                                        <i class="mdi mdi-history me-1"></i> Ver histórico completo
+                                    <button class="btn btn-sm btn-outline-secondary ripple" id="ver-historico-completo">
+                                        <i class="mdi mdi-history me-1"></i> Histórico completo
                                     </button>
                                 </div>
                             </div>
@@ -258,7 +302,7 @@
         </div>
     </div>
 
-    <!-- Modal Documentos Avulsos -->
+    <!-- Modal Documentos Avulsos Moderno -->
     <div class="modal fade" id="modalDocumentos" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -284,7 +328,7 @@
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Digite CPF ou nome"
                                         id="busca-paciente">
-                                    <button class="btn btn-primary" id="btn-buscar-paciente">
+                                    <button class="btn btn-primary ripple" id="btn-buscar-paciente">
                                         <i class="mdi mdi-magnify"></i> Buscar
                                     </button>
                                 </div>
@@ -301,21 +345,23 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Conteúdo do Documento</label>
-                                <textarea class="form-control" rows="5" id="conteudo-documento"></textarea>
+                                <textarea class="form-control" rows="5" id="conteudo-documento"
+                                    placeholder="Descreva o conteúdo do documento aqui..."></textarea>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Dias de Afastamento (se atestado)</label>
-                                <input type="number" class="form-control" id="dias-afastamento">
+                                <input type="number" class="form-control" id="dias-afastamento" placeholder="0">
                             </div>
                         </div>
                         <div class="tab-pane fade" id="terceiros">
                             <div class="mb-3">
                                 <label class="form-label">Nome Completo</label>
-                                <input type="text" class="form-control" id="nome-terceiro">
+                                <input type="text" class="form-control" id="nome-terceiro"
+                                    placeholder="Nome completo do destinatário">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">CPF</label>
-                                <input type="text" class="form-control" id="cpf-terceiro">
+                                <input type="text" class="form-control" id="cpf-terceiro" placeholder="000.000.000-00">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Tipo de Documento</label>
@@ -328,14 +374,15 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Conteúdo do Documento</label>
-                                <textarea class="form-control" rows="5" id="conteudo-documento-terceiro"></textarea>
+                                <textarea class="form-control" rows="5" id="conteudo-documento-terceiro"
+                                    placeholder="Descreva o conteúdo do documento aqui..."></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="btn-imprimir-documento">
+                    <button type="button" class="btn btn-secondary ripple" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary ripple" id="btn-imprimir-documento">
                         <i class="mdi mdi-printer me-1"></i> Imprimir Documento
                     </button>
                 </div>
@@ -343,7 +390,7 @@
         </div>
     </div>
 
-    <!-- Modal Lista de Pacientes -->
+    <!-- Modal Lista de Pacientes Moderno -->
     <div class="modal fade" id="modalPacientesHoje" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -381,18 +428,36 @@
                                     <td>05:32</td>
                                     <td><span class="badge bg-success">Atendido</span></td>
                                 </tr>
+                                <tr>
+                                    <td>RYAN PIETRO DA SILVA NASCIMENTO</td>
+                                    <td>7 anos</td>
+                                    <td>09:18</td>
+                                    <td><span class="badge bg-success">Atendido</span></td>
+                                </tr>
+                                <tr>
+                                    <td>MARIA EDUARDA OLIVEIRA</td>
+                                    <td>8 anos</td>
+                                    <td>10:45</td>
+                                    <td><span class="badge bg-success">Atendido</span></td>
+                                </tr>
+                                <tr>
+                                    <td>LUCAS GABRIEL SILVA</td>
+                                    <td>8 anos</td>
+                                    <td>08:00</td>
+                                    <td><span class="badge bg-danger">Ausente</span></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-secondary ripple" data-bs-dismiss="modal">Fechar</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Pacientes Atendidos -->
+    <!-- Modal Pacientes Atendidos Moderno -->
     <div class="modal fade" id="modalAtendidos" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -424,18 +489,24 @@
                                     <td>09:18</td>
                                     <td>30 min</td>
                                 </tr>
+                                <tr>
+                                    <td>MARIA EDUARDA OLIVEIRA</td>
+                                    <td>8 anos</td>
+                                    <td>10:45</td>
+                                    <td>50 min</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-secondary ripple" data-bs-dismiss="modal">Fechar</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Pacientes em Espera -->
+    <!-- Modal Pacientes em Espera Moderno -->
     <div class="modal fade" id="modalEspera" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -472,13 +543,13 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-secondary ripple" data-bs-dismiss="modal">Fechar</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Pacientes Ausentes -->
+    <!-- Modal Pacientes Ausentes Moderno -->
     <div class="modal fade" id="modalAusentes" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -503,8 +574,8 @@
                                     <td>8 anos</td>
                                     <td>08:00</td>
                                     <td>
-                                        <button class="btn btn-sm btn-outline-primary">Reagendar</button>
-                                        <button class="btn btn-sm btn-outline-danger">Cancelar</button>
+                                        <button class="btn btn-sm btn-outline-primary ripple">Reagendar</button>
+                                        <button class="btn btn-sm btn-outline-danger ripple">Cancelar</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -512,7 +583,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-secondary ripple" data-bs-dismiss="modal">Fechar</button>
                 </div>
             </div>
         </div>
@@ -521,224 +592,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        $(document).ready(function () {
-            // Carrega dados da sala
-            const roomData = JSON.parse(localStorage.getItem('roomData'));
-            if (roomData) {
-                $('#sala-info').text(`Sala ${roomData.roomNumber} - ${roomData.panel.charAt(0).toUpperCase() + roomData.panel.slice(1)}`);
-            }
-
-            // Fechar sidebar ao clicar fora (para telas pequenas)
-            $(document).on('click', function (e) {
-                if ($(window).width() <= 992) {
-                    if (!$(e.target).closest('#sidebar, #toggleSidebar').length) {
-                        $('#sidebar').removeClass('show');
-                    }
-                }
-            });
-
-            // Fechar sidebar ao clicar em um item do menu (para telas pequenas)
-            $('.sidebar-menu .nav-link').click(function () {
-                if ($(window).width() <= 992) {
-                    $('#sidebar').removeClass('show');
-                }
-            });
-
-            // Mostrar botão de iniciar atendimento apenas no primeiro paciente
-            function atualizarBotoesAtendimento() {
-                $('.patient-card').each(function (index) {
-                    if (index === 0) {
-                        $(this).find('.iniciar-atendimento').show();
-                    } else {
-                        $(this).find('.iniciar-atendimento').hide();
-                    }
-                });
-            }
-
-            atualizarBotoesAtendimento();
-
-            // Função para adicionar botão de iniciar atendimento ao primeiro paciente
-            function adicionarBotaoPrimeiroPaciente() {
-                console.log('Adicionando botão de iniciar atendimento ao primeiro paciente');
-                // Remove todos os botões existentes primeiro
-                $('.patient-card .iniciar-atendimento').remove();
-
-                // Pega o primeiro paciente e adiciona o botão
-                const primeiroPaciente = $('.patient-card').first();
-
-                // Cria o botão
-                const botaoAtendimento = $(
-                    `<div class="d-flex justify-content-end mt-2">
-                        <button class="btn btn-sm btn-primary iniciar-atendimento">
-                            <i class="mdi mdi-play-circle-outline me-1"></i> Iniciar Atendimento
-                        </button>
-                    </div>`
-                );
-
-                // Adiciona o botão ao primeiro paciente
-                primeiroPaciente.append(botaoAtendimento);
-
-                // Adiciona o evento de clique ao botão
-                botaoAtendimento.click(function () {
-                    const paciente = primeiroPaciente.find('.patient-name').text();
-
-                    Swal.fire({
-                        title: 'Iniciar Atendimento',
-                        html: `Deseja iniciar o atendimento de <b>${paciente}</b>?`,
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonText: 'Sim, iniciar',
-                        cancelButtonText: 'Cancelar',
-                        confirmButtonColor: '#5e60d5'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = 'ficha.html';
-                        }
-                    });
-                });
-            }
-
-            // Chama a função quando a página carrega
-            adicionarBotaoPrimeiroPaciente();
-
-            // Atualiza data atual
-            const dataAtual = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' };
-            $('#data-atual').text(dataAtual.toLocaleDateString('pt-BR', options));
-
-            // Toggle sidebar
-            $('#toggleSidebar').click(function () {
-                $('#sidebar').toggleClass('show');
-            });
-
-            // Modal de documentos avulsos
-            $('#btn-emitir-documentos').click(function () {
-                $('#modalDocumentos').modal('show');
-            });
-
-            // Trocar sala
-            $('#trocar-sala').click(function () {
-                window.location.href = 'index.html';
-            });
-
-            // Atualizar lista de pacientes
-            $('#refresh-pacientes').click(function () {
-                console.log('Atualizando lista de pacientes...');
-
-                setTimeout(function () {
-                    atualizarBotoesAtendimento();
-                }, 1500);
-                const refreshIcon = $(this);
-                // refreshIcon.addClass('refreshing');
-
-                // Simula requisição AJAX
-                setTimeout(() => {
-                    refreshIcon.removeClass('refreshing');
-
-                    // Feedback visual
-                    refreshIcon.removeClass('mdi-refresh').addClass('mdi-check');
-                    refreshIcon.css('color', 'var(--success)');
-
-                    setTimeout(() => {
-                        refreshIcon.removeClass('mdi-check').addClass('mdi-refresh');
-                        refreshIcon.css('color', '');
-                    }, 2000);
-                }, 1500);
-
-                setTimeout(adicionarBotaoPrimeiroPaciente, 1500);
-            });
-
-            // Iniciar atendimento
-            $('.iniciar-atendimento').click(function () {
-                const paciente = $('#paciente-atual .patient-name').text();
-
-                Swal.fire({
-                    title: 'Iniciar Atendimento',
-                    html: `Deseja iniciar o atendimento de <b>${paciente}</b>?`,
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Sim, iniciar',
-                    cancelButtonText: 'Cancelar',
-                    confirmButtonColor: '#4361ee'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = 'ficha.html';
-                    }
-                });
-            });
-
-            // Buscar paciente para documento
-            $('#btn-buscar-paciente').click(function () {
-                const termo = $('#busca-paciente').val();
-                if (termo.length < 3) {
-                    Swal.fire({
-                        title: 'Termo muito curto',
-                        text: 'Digite pelo menos 3 caracteres para buscar',
-                        icon: 'warning'
-                    });
-                    return;
-                }
-
-                // Simula busca AJAX
-                $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Buscando...');
-
-                setTimeout(() => {
-                    $(this).html('<i class="mdi mdi-magnify"></i> Buscar');
-                    Swal.fire({
-                        title: 'Paciente encontrado',
-                        text: 'Dados do paciente carregados com sucesso',
-                        icon: 'success'
-                    });
-                }, 1500);
-            });
-
-            // Imprimir documento
-            $('#btn-imprimir-documento').click(function () {
-                Swal.fire({
-                    title: 'Documento enviado para impressão',
-                    text: 'O documento foi gerado com sucesso e enviado para a impressora padrão.',
-                    icon: 'success',
-                    confirmButtonColor: '#4361ee'
-                }).then(() => {
-                    $('#modalDocumentos').modal('hide');
-                });
-            });
-
-            // Ver todos os pacientes
-            $('#ver-todos-pacientes').click(function () {
-                $('#modalPacientesHoje').modal('show');
-            });
-        });
-
-        function atualizarDataHora() {
-            const elementoData = document.getElementById('data-atual');
-            const agora = new Date();
-
-            // Formatação da data
-            const opcoesData = {
-                weekday: 'long',
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
-            };
-            const dataFormatada = agora.toLocaleDateString('pt-BR', opcoesData);
-
-            // Formatação da hora
-            const horas = agora.getHours().toString().padStart(2, '0');
-            const minutos = agora.getMinutes().toString().padStart(2, '0');
-            const segundos = agora.getSeconds().toString().padStart(2, '0');
-
-            // Atualiza o elemento HTML
-            elementoData.textContent = `${dataFormatada} ${horas}:${minutos}:${segundos}`;
-        }
-
-        // Atualiza imediatamente
-        atualizarDataHora();
-
-        // Atualiza a cada segundo (1000ms)
-        setInterval(atualizarDataHora, 1000);
-    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="js/atendimento.js"></script>
 </body>
 
 </html>

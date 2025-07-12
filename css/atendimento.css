@@ -1,35 +1,42 @@
+@import url("./root.css");
+
 body {
-  font-family: "Poppins", sans-serif;
-  background-color: var(--bg-light);
+  font-family: "Inter", sans-serif;
+  background-color: var(--body-bg);
+  color: var(--text-primary);
   overflow-x: hidden;
 }
 
-/* Layout Principal */
-.main-wrapper {
-  display: flex;
-  min-height: 100vh;
-}
-
-/* Sidebar */
+/* Sidebar Modernizada */
 .sidebar {
-  width: var(--sidebar-width);
-  background: white;
+  width: 260px;
   height: 100vh;
   position: fixed;
-  left: 0;
   top: 0;
-  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05);
-  transition: var(--transition);
+  left: 0;
+  background-color: var(--sidebar-bg);
+  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.05);
   z-index: 1000;
-  overflow-y: auto;
+  transition: var(--transition);
+  transform: translateX(-100%);
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.sidebar.show {
+  transform: translateX(0);
 }
 
 .sidebar-header {
-  height: var(--header-height);
+  padding: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   display: flex;
   align-items: center;
-  padding: 0 20px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  justify-content: center;
+}
+
+.sidebar-logo {
+  height: 40px;
+  transition: var(--transition);
 }
 
 .sidebar-menu {
@@ -37,57 +44,59 @@ body {
 }
 
 .sidebar-menu .nav-item {
-  position: relative;
+  margin: 5px 15px;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .sidebar-menu .nav-link {
-  padding: 12px 20px;
-  color: var(--dark);
+  padding: 12px 15px;
+  color: var(--text-secondary);
   display: flex;
   align-items: center;
-  border-radius: 0;
   transition: var(--transition);
+  border-radius: 8px;
 }
 
 .sidebar-menu .nav-link:hover {
-  background-color: rgba(67, 97, 238, 0.05);
+  background-color: rgba(94, 96, 213, 0.1);
   color: var(--primary);
 }
 
 .sidebar-menu .nav-link.active {
-  background-color: rgba(67, 97, 238, 0.1);
-  color: var(--primary);
-  font-weight: 500;
+  background-color: var(--primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(94, 96, 213, 0.3);
 }
 
 .sidebar-menu .nav-link i {
+  margin-right: 10px;
   font-size: 1.2rem;
-  margin-right: 12px;
-  width: 24px;
-  text-align: center;
 }
 
 /* Conteúdo Principal */
 .main-content {
-  margin-left: var(--sidebar-width);
-  flex: 1;
+  margin-left: 0;
   transition: var(--transition);
   min-height: 100vh;
-  background-color: var(--bg-light);
 }
 
-/* Header */
+.sidebar.show + .main-content {
+  margin-left: 260px;
+}
+
+/* Header Moderno */
 .main-header {
-  height: var(--header-height);
-  background: white;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+  padding: 15px 25px;
+  background-color: var(--white);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 25px;
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 100;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .header-left {
@@ -98,17 +107,22 @@ body {
 .toggle-sidebar {
   background: none;
   border: none;
+  color: var(--text-primary);
   font-size: 1.5rem;
-  color: var(--dark);
-  margin-right: 15px;
+  margin-right: 20px;
   cursor: pointer;
-  display: none;
+  transition: var(--transition);
+}
+
+.toggle-sidebar:hover {
+  color: var(--primary);
 }
 
 .header-title {
-  margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
 }
 
 .user-menu {
@@ -120,60 +134,58 @@ body {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid white;
+  background-color: var(--gray-light);
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #e9ecef;
   margin-left: 15px;
-}
-
-/* Conteúdo */
-.content-wrapper {
-  padding: 25px;
-}
-
-/* Cards */
-.glass-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: var(--card-shadow);
   transition: var(--transition);
-  border: none;
-  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.user-avatar:hover {
+  background-color: var(--primary-light);
+  color: white;
+}
+
+/* Cards Modernos */
+.glass-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: var(--transition);
+  overflow: hidden;
 }
 
 .glass-card:hover {
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 .card-header {
   padding: 15px 20px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  background: transparent;
+  background-color: transparent;
 }
 
 .card-title {
-  margin: 0;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
 }
 
 .card-body {
   padding: 20px;
 }
 
-/* Estatísticas */
+/* Stats Cards */
 .stats-card {
-  text-align: center;
   padding: 20px;
+  text-align: center;
   cursor: pointer;
-  transition: var(--transition);
-}
-
-.stats-card:hover {
-  transform: translateY(-5px);
 }
 
 .stats-icon {
@@ -182,87 +194,81 @@ body {
 }
 
 .stats-number {
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 1.8rem;
+  font-weight: 700;
   margin-bottom: 5px;
+  color: var(--text-primary);
 }
 
 .stats-label {
-  font-size: 0.85rem;
-  color: var(--gray);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
 }
 
-/* Pacientes */
+/* Patient Cards */
 .patient-card {
-  transition: var(--transition);
-  cursor: pointer;
-  border-left: 4px solid transparent;
   padding: 15px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   position: relative;
+  transition: var(--transition);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.patient-card:hover {
-  transform: translateX(5px);
+.patient-card.pulse {
+  animation: pulse 2s infinite;
   border-left: 4px solid var(--primary);
 }
 
-.patient-card .d-flex.justify-content-end {
-  position: absolute;
-  right: 15px;
-  bottom: 15px;
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(94, 96, 213, 0.4);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(94, 96, 213, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(94, 96, 213, 0);
+  }
 }
 
 .patient-avatar {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid white;
+  background-color: var(--gray-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .patient-name {
+  font-size: 0.95rem;
   font-weight: 600;
-  margin-bottom: 3px;
+  margin-bottom: 5px;
+  color: var(--text-primary);
 }
 
 .patient-info {
   font-size: 0.85rem;
-  color: var(--gray);
-}
-
-.pulse {
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(67, 97, 238, 0.4);
-  }
-
-  70% {
-    box-shadow: 0 0 0 10px rgba(67, 97, 238, 0);
-  }
-
-  100% {
-    box-shadow: 0 0 0 0 rgba(67, 97, 238, 0);
-  }
+  color: var(--text-secondary);
 }
 
 /* Timeline */
 .timeline {
   position: relative;
-  padding-left: 30px;
+  padding-left: 20px;
 }
 
 .timeline::before {
   content: "";
   position: absolute;
-  left: 10px;
+  left: 5px;
   top: 0;
   bottom: 0;
   width: 2px;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--gray-light);
 }
 
 .timeline-item {
@@ -273,103 +279,240 @@ body {
 .timeline-item::before {
   content: "";
   position: absolute;
-  left: -30px;
+  left: -20px;
   top: 5px;
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background-color: var(--primary);
+  background-color: var(--success);
   border: 2px solid white;
-  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
 }
 
-/* Botão de atualizar */
-.refresh-btn {
-  cursor: pointer;
+.timeline-content {
+  background-color: var(--gray-light);
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+
+/* Botões */
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
+  padding: 8px 16px;
   transition: var(--transition);
 }
 
-.refresh-btn:hover {
-  transform: rotate(180deg);
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
 }
 
-.iniciar-atendimento,
-#quantidade-espera {
-  background-color: var(--primary) !important;
-  border-color: var(--primary) !important;
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+  transform: translateY(-2px);
 }
 
-#ver-todos-pacientes,
-#trocar-sala {
-  border-color: var(--primary) !important;
-  color: var(--primary) !important;
+.btn-outline-primary {
+  color: var(--primary);
+  border-color: var(--primary);
 }
 
-#btn-emitir-documentos,
-#ver-historico-completo {
-  background-color: transparent !important;
-  border-color: var(--primary) !important;
-  color: var(--primary) !important;
+.btn-outline-primary:hover {
+  background-color: var(--primary);
+  color: white;
 }
 
-#ver-todos-pacientes:hover,
-#trocar-sala:hover,
-#btn-emitir-documentos:hover,
-#ver-historico-completo:hover {
-  background-color: var(--primary) !important;
-  color: white !important;
+/* Controles de paciente */
+.patient-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
 }
 
-/* .refreshing {
-  animation: spin 1s linear infinite;
-} */
-
-@keyframes spin {
-  100% {
-    transform: rotate(360deg);
-  }
+.patient-controls .btn {
+  padding: 5px 10px;
+  margin-left: 5px;
+  border-radius: 6px;
+  font-size: 0.8rem;
 }
 
-.patient-card .iniciar-atendimento {
-  display: none;
+.move-btn {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 50%;
 }
 
-.patient-card:first-child .iniciar-atendimento {
-  display: inline-block;
+/* Modal Moderno */
+.modal-content {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 20px;
+}
+
+.modal-title {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 15px 20px;
+}
+
+/* Badges */
+.badge {
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 20px;
+}
+
+/* Formulários */
+.form-control,
+.form-select {
+  border-radius: 8px;
+  padding: 10px 15px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(94, 96, 213, 0.2);
+}
+
+/* Tabelas */
+.table {
+  color: var(--text-primary);
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(94, 96, 213, 0.05);
 }
 
 /* Responsividade */
-@media (max-width: 992px) {
+@media (min-width: 992px) {
   .sidebar {
-    transform: translateX(-100%);
-  }
-
-  .sidebar.show {
     transform: translateX(0);
   }
 
   .main-content {
-    margin-left: 0;
+    margin-left: 260px;
   }
 
   .toggle-sidebar {
-    display: block;
+    display: none;
   }
 }
 
-/* Animações */
-.animate-fade-in {
-  animation: fadeIn 0.3s ease-in-out;
+@media (max-width: 768px) {
+  .header-title {
+    font-size: 1rem;
+  }
+
+  .user-menu .text-end {
+    display: none;
+  }
+}
+
+/* Animações personalizadas */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px);
   }
 
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.slide-in-right {
+  animation: slideInRight 0.5s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Efeito de hover suave nos cards */
+.hover-scale {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Efeito de onda nos botões */
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  transform: scale(10, 10);
+  opacity: 0;
+  transition: transform 0.5s, opacity 1s;
+}
+
+.ripple:active:after {
+  transform: scale(0, 0);
+  opacity: 0.3;
+  transition: 0s;
+}
+
+/* Efeito de loading */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  display: inline-block;
 }

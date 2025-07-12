@@ -5,14 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SOS Simples Saúde - Ficha de Atendimento</title>
+    <link rel="stylesheet" href="./css/ficha.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="./css/root.css">
-    <link rel="stylesheet" href="./css/ficha.css">
+    <style>
+
+    </style>
 </head>
 
 <body>
@@ -103,9 +105,6 @@
                                 id="hora-inicio"></span></small>
                     </div>
                     <div>
-                        <!-- <button class="btn btn-primary me-2" id="btn-salvar">
-                            <i class="mdi mdi-content-save me-1"></i> Salvar
-                        </button> -->
                         <button class="btn btn-success" id="finalizar-atendimento">
                             <i class="mdi mdi-check-circle-outline me-1"></i> Salvar e Finalizar
                         </button>
@@ -213,24 +212,142 @@
                                         placeholder="Descreva a indicação clínica para os exames..."
                                         id="txt-indicacao"></textarea>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label fw-bold">Exames Solicitados</label>
-                                    <div id="exames-container" class="scrollable-container mb-3">
-                                        <div class="d-flex mb-2">
-                                            <input type="text" class="form-control me-2" placeholder="Nome do exame"
-                                                name="exame[]">
-                                            <button class="btn btn-sm btn-danger btn-remove-exame">
-                                                <i class="mdi mdi-delete"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-sm btn-primary mb-0" id="add-exame">
-                                        <i class="mdi mdi-plus me-1"></i> Adicionar Exame
-                                    </button>
-                                    <button class="btn btn-sm btn-secondary">
-                                        <i class="mdi mdi-printer me-1"></i> Imprimir Guia SADT
-                                    </button>
+
+                                <!-- Abas de tipos de exames -->
+                                <div class="exams-tabs" id="exams-tabs">
+                                    <!-- As abas serão preenchidas dinamicamente via JavaScript -->
                                 </div>
+
+                                <!-- Seções de exames -->
+                                <div id="exams-sections">
+                                    <!-- Laboratoriais -->
+                                    <div class="exam-section" id="laboratoriais-section">
+                                        <h6 class="section-title">Exames Laboratoriais</h6>
+                                        <div id="laboratoriais-container" class="scrollable-container mb-3">
+                                            <div class="d-flex mb-2">
+                                                <input type="text" class="form-control me-2"
+                                                    placeholder="Nome do exame laboratorial"
+                                                    name="exame-laboratorial[]">
+                                                <button class="btn btn-sm btn-danger btn-remove-exame">
+                                                    <i class="mdi mdi-delete"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary mb-3" data-section="laboratoriais">
+                                            <i class="mdi mdi-plus me-1"></i> Adicionar Exame Laboratorial
+                                        </button>
+                                    </div>
+
+                                    <!-- Radiodiagnóstico -->
+                                    <div class="exam-section" id="radiodiagnostico-section">
+                                        <h6 class="section-title">Exames de Radiodiagnóstico</h6>
+                                        <div id="radiodiagnostico-container" class="scrollable-container mb-3">
+                                            <div class="d-flex mb-2">
+                                                <input type="text" class="form-control me-2"
+                                                    placeholder="Nome do exame de radiodiagnóstico"
+                                                    name="exame-radiodiagnostico[]">
+                                                <button class="btn btn-sm btn-danger btn-remove-exame">
+                                                    <i class="mdi mdi-delete"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary mb-3" data-section="radiodiagnostico">
+                                            <i class="mdi mdi-plus me-1"></i> Adicionar Exame de Radiodiagnóstico
+                                        </button>
+                                    </div>
+
+                                    <!-- Ultrassonografia -->
+                                    <div class="exam-section" id="ultrassonografia-section">
+                                        <h6 class="section-title">Exames de Ultrassonografia</h6>
+                                        <div id="ultrassonografia-container" class="scrollable-container mb-3">
+                                            <div class="d-flex mb-2">
+                                                <input type="text" class="form-control me-2"
+                                                    placeholder="Nome do exame de ultrassonografia"
+                                                    name="exame-ultrassonografia[]">
+                                                <button class="btn btn-sm btn-danger btn-remove-exame">
+                                                    <i class="mdi mdi-delete"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary mb-3" data-section="ultrassonografia">
+                                            <i class="mdi mdi-plus me-1"></i> Adicionar Exame de Ultrassonografia
+                                        </button>
+                                    </div>
+
+                                    <!-- Tomografias -->
+                                    <div class="exam-section" id="tomografias-section">
+                                        <h6 class="section-title">Exames de Tomografia</h6>
+                                        <div id="tomografias-container" class="scrollable-container mb-3">
+                                            <div class="d-flex mb-2">
+                                                <input type="text" class="form-control me-2"
+                                                    placeholder="Nome do exame de tomografia" name="exame-tomografia[]">
+                                                <button class="btn btn-sm btn-danger btn-remove-exame">
+                                                    <i class="mdi mdi-delete"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary mb-3" data-section="tomografias">
+                                            <i class="mdi mdi-plus me-1"></i> Adicionar Exame de Tomografia
+                                        </button>
+                                    </div>
+
+                                    <!-- Ressonâncias -->
+                                    <div class="exam-section" id="ressonancias-section">
+                                        <h6 class="section-title">Exames de Ressonância Magnética</h6>
+                                        <div id="ressonancias-container" class="scrollable-container mb-3">
+                                            <div class="d-flex mb-2">
+                                                <input type="text" class="form-control me-2"
+                                                    placeholder="Nome do exame de ressonância"
+                                                    name="exame-ressonancia[]">
+                                                <button class="btn btn-sm btn-danger btn-remove-exame">
+                                                    <i class="mdi mdi-delete"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary mb-3" data-section="ressonancias">
+                                            <i class="mdi mdi-plus me-1"></i> Adicionar Exame de Ressonância
+                                        </button>
+                                    </div>
+
+                                    <!-- Sessões e Terapias -->
+                                    <div class="exam-section" id="sessoes-section">
+                                        <h6 class="section-title">Sessões e Terapias</h6>
+                                        <div id="sessoes-container" class="scrollable-container mb-3">
+                                            <div class="d-flex mb-2">
+                                                <input type="text" class="form-control me-2"
+                                                    placeholder="Nome da sessão/terapia" name="sessao-terapia[]">
+                                                <button class="btn btn-sm btn-danger btn-remove-exame">
+                                                    <i class="mdi mdi-delete"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary mb-3" data-section="sessoes">
+                                            <i class="mdi mdi-plus me-1"></i> Adicionar Sessão/Terapia
+                                        </button>
+                                    </div>
+
+                                    <!-- Solicitação Avulsa -->
+                                    <div class="exam-section" id="avulsa-section">
+                                        <h6 class="section-title">Solicitação Avulsa</h6>
+                                        <div id="avulsa-container" class="scrollable-container mb-3">
+                                            <div class="d-flex mb-2">
+                                                <input type="text" class="form-control me-2"
+                                                    placeholder="Digite o nome do exame que deseja solicitar"
+                                                    name="exame-avulso[]">
+                                                <button class="btn btn-sm btn-danger btn-remove-exame">
+                                                    <i class="mdi mdi-delete"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary mb-3" data-section="avulsa">
+                                            <i class="mdi mdi-plus me-1"></i> Adicionar Exame Avulso
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-sm btn-secondary">
+                                    <i class="mdi mdi-printer me-1"></i> Imprimir Guia SADT
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -468,455 +585,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        $(document).ready(function () {
-            // Configuração inicial
-            const now = new Date();
-            $('#hora-inicio').text(now.toLocaleString('pt-BR'));
-
-            // Toggle sidebar
-            $('#toggleSidebar').click(function () {
-                $('#sidebar').toggleClass('show');
-            });
-
-            // Fechar sidebar ao clicar em um item (em telas pequenas)
-            $('.sidebar-menu .nav-link').click(function () {
-                if ($(window).width() < 992) {
-                    $('#sidebar').removeClass('show');
-                }
-            });
-
-            // Controle do tipo de prescrição
-            $('#tipo-prescricao').change(function () {
-                if ($(this).val() === 'controle' || $(this).val() === 'especial') {
-                    $('.prescription-item #campos-adicionais').show();
-                } else {
-                    $('.prescription-item #campos-adicionais').hide();
-                }
-            });
-
-            // Upload de arquivos
-            const dropArea = document.getElementById('drop-area');
-            const fileInput = document.getElementById('fileElem');
-            const browseBtn = document.getElementById('browse-btn');
-            const filesContainer = document.getElementById('files-container');
-            const emptyMessage = document.getElementById('empty-message');
-
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, preventDefaults, false);
-            });
-
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropArea.addEventListener(eventName, highlight, false);
-            });
-
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, unhighlight, false);
-            });
-
-            function highlight() {
-                dropArea.classList.add('dragover');
-            }
-
-            function unhighlight() {
-                dropArea.classList.remove('dragover');
-            }
-
-            dropArea.addEventListener('drop', handleDrop, false);
-            browseBtn.addEventListener('click', () => fileInput.click());
-
-            fileInput.addEventListener('change', function () {
-                handleFiles(this.files);
-            });
-
-            function handleDrop(e) {
-                const dt = e.dataTransfer;
-                const files = dt.files;
-                handleFiles(files);
-            }
-
-            function handleFiles(files) {
-                if (files.length > 0) {
-                    emptyMessage.style.display = 'none';
-                    filesContainer.style.display = 'block';
-
-                    for (let i = 0; i < files.length; i++) {
-                        addFileToContainer(files[i]);
-                    }
-                }
-            }
-
-            function addFileToContainer(file) {
-                const fileItem = document.createElement('div');
-                fileItem.className = 'file-item';
-
-                const filePreview = document.createElement('div');
-                filePreview.className = 'd-flex flex-column align-items-center';
-
-                const icon = document.createElement('i');
-                icon.className = 'mdi mdi-file-outline mdi-36px text-primary mb-1';
-
-                const fileName = document.createElement('span');
-                fileName.className = 'text-truncate';
-                fileName.style.maxWidth = '100px';
-                fileName.textContent = file.name;
-
-                const removeBtn = document.createElement('button');
-                removeBtn.className = 'btn btn-danger btn-sm btn-remove-file';
-                removeBtn.innerHTML = '<i class="mdi mdi-close"></i>';
-                removeBtn.addEventListener('click', function () {
-                    fileItem.remove();
-                    if (filesContainer.children.length === 0) {
-                        emptyMessage.style.display = 'block';
-                        filesContainer.style.display = 'none';
-                    }
-                });
-
-                filePreview.appendChild(icon);
-                filePreview.appendChild(fileName);
-                fileItem.appendChild(filePreview);
-                fileItem.appendChild(removeBtn);
-                filesContainer.appendChild(fileItem);
-            }
-
-            // Adicionar prescrição
-            $('#add-prescricao').click(function () {
-                const tipoPrescricao = $('#tipo-prescricao').val();
-                const newItem = $(`
-                    <div class="prescription-item p-3 mb-3 glass-card animate__animated animate__fadeIn">
-                        <div class="row">
-                            <div class="col-md-5 mb-2">
-                                <input type="text" class="form-control" placeholder="Medicamento" name="medicamento[]">
-                            </div>
-                            <div class="col-md-4 mb-2">
-                                <input type="text" class="form-control" placeholder="Posologia" name="posologia[]">
-                            </div>
-                            <div class="col-md-2 mb-2">
-                                <input type="text" class="form-control" placeholder="Via" name="via[]">
-                            </div>
-                            <div class="col-md-1 mb-2 d-flex align-items-center">
-                                <button class="btn btn-sm btn-danger w-100 btn-remove-prescricao">
-                                    <i class="mdi mdi-delete"></i>
-                                </button>
-                            </div>
-                        </div>
-                        ${tipoPrescricao === 'controle' || tipoPrescricao === 'especial' ?
-                        `<div class="row mt-2" id="campos-adicionais">
-                            <div class="col-md-6 mb-2">
-                                <input type="text" class="form-control" placeholder="Quantidade" name="quantidade[]">
-                            </div>
-                            <div class="col-md-6 mb-2">
-                                <input type="text" class="form-control" placeholder="CID" name="cid[]">
-                            </div>
-                        </div>` : ''}
-                    </div>
-                `);
-
-                $('#prescricoes-container').append(newItem);
-                $('#prescricoes-container').scrollTop($('#prescricoes-container')[0].scrollHeight);
-            });
-
-            // Adicionar exame
-            $('#add-exame').click(function () {
-                const newItem = $(`
-                    <div class="d-flex mb-2 animate__animated animate__fadeIn">
-                        <input type="text" class="form-control me-2" placeholder="Nome do exame" name="exame[]">
-                        <button class="btn btn-sm btn-danger btn-remove-exame">
-                            <i class="mdi mdi-delete"></i>
-                        </button>
-                    </div>
-                `);
-
-                $('#exames-container').append(newItem);
-                $('#exames-container').scrollTop($('#exames-container')[0].scrollHeight);
-            });
-
-            // Remover prescrição
-            $(document).on('click', '.btn-remove-prescricao', function () {
-                $(this).closest('.prescription-item').addClass('animate__fadeOut');
-                setTimeout(() => {
-                    $(this).closest('.prescription-item').remove();
-                }, 500);
-            });
-
-            // Remover exame
-            $(document).on('click', '.btn-remove-exame', function () {
-                $(this).closest('.d-flex').addClass('animate__fadeOut');
-                setTimeout(() => {
-                    $(this).closest('.d-flex').remove();
-                }, 500);
-            });
-
-            // Filtro por unidade no histórico
-            $('.dropdown-unit .dropdown-item').click(function (e) {
-                e.preventDefault();
-                const unit = $(this).data('unit');
-                $('.dropdown-unit .btn').html(`<i class="mdi mdi-hospital-building me-2"></i> ${unit}`);
-
-                // Aqui você implementaria a filtragem real dos itens por unidade
-                // Por enquanto, apenas simulamos destacando os itens da unidade selecionada
-                $('.badge-unit').parent().parent().show();
-                if (unit !== "Todas as unidades") {
-                    $('.badge-unit').each(function () {
-                        if ($(this).text() !== unit) {
-                            $(this).parent().parent().hide();
-                        }
-                    });
-                }
-            });
-
-            // // Salvar dados
-            // $('#btn-salvar').click(function () {
-            //     // Validar campos obrigatórios
-            //     const anamnese = $('#txt-anamnese').val();
-            //     const resumo = $('#txt-resumo').val();
-
-            //     if (anamnese.length < 200 || resumo.length === 0) {
-            //         Swal.fire({
-            //             title: 'Campos obrigatórios',
-            //             text: 'Por favor, preencha todos os campos obrigatórios da anamnese',
-            //             icon: 'warning',
-            //             confirmButtonColor: '#4361ee'
-            //         });
-            //         return;
-            //     }
-
-
-
-            //     // Simular envio AJAX
-            //     Swal.fire({
-            //         title: 'Salvando dados...',
-            //         html: 'Por favor, aguarde enquanto os dados são salvos.',
-            //         allowOutsideClick: false,
-            //         didOpen: () => {
-            //             Swal.showLoading();
-
-            //             // Simular requisição AJAX
-            //             setTimeout(() => {
-            //                 Swal.fire({
-            //                     title: 'Dados salvos com sucesso!',
-            //                     icon: 'success',
-            //                     confirmButtonColor: '#4361ee'
-            //                 });
-            //             }, 1500);
-            //         }
-            //     });
-            // });
-
-            // Finalizar atendimento
-            $('#finalizar-atendimento').click(async function () {
-                // 1. Validação dos campos obrigatórios
-                const camposObrigatorios = validarCamposObrigatorios();
-                if (!camposObrigatorios.validos) {
-                    await Swal.fire({
-                        title: 'Campos obrigatórios',
-                        html: camposObrigatorios.mensagem,
-                        icon: 'warning',
-                        confirmButtonColor: '#4361ee'
-                    });
-                    return;
-                }
-
-                // 2. Coletar todos os dados do formulário
-                const formData = coletarDadosFormulario();
-
-                // 3. Exibir dados no console para debug
-                console.log("Dados coletados para envio:", formData);
-
-                // 4. Confirmar com o usuário antes de enviar
-                const confirmacao = await Swal.fire({
-                    title: 'Finalizar Atendimento',
-                    html: 'Tem certeza que deseja finalizar o atendimento?<br><small>Todos os dados serão salvos.</small>',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Sim, finalizar',
-                    cancelButtonText: 'Cancelar',
-                    confirmButtonColor: '#4361ee',
-                    showLoaderOnConfirm: true,
-                    preConfirm: () => {
-                        return new Promise((resolve) => {
-                            // Simular salvamento inicial (na prática, seria seu AJAX)
-                            $('#btn-salvar').click();
-                            setTimeout(resolve, 500);
-                        });
-                    }
-                });
-
-                if (!confirmacao.isConfirmed) {
-                    console.log('Finalização cancelada pelo usuário');
-                    return;
-                }
-
-                // 5. Processar envio dos dados (simulação)
-                try {
-                    const resultadoEnvio = await enviarDadosAtendimento(formData);
-
-                    // 6. Feedback e redirecionamento
-                    await Swal.fire({
-                        title: 'Atendimento Finalizado!',
-                        html: `O atendimento foi concluído com sucesso.<br><small>Redirecionando...</small>`,
-                        icon: 'success',
-                        timer: 1500,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    });
-
-                    window.location.href = 'atendimento.html';
-
-                } catch (error) {
-                    console.error('Erro ao finalizar atendimento:', error);
-                    await Swal.fire({
-                        title: 'Erro ao Finalizar',
-                        text: 'Ocorreu um erro ao tentar finalizar o atendimento. Por favor, tente novamente.',
-                        icon: 'error',
-                        confirmButtonColor: '#4361ee'
-                    });
-                }
-            });
-
-            // Funções auxiliares
-            function validarCamposObrigatorios() {
-                const anamnese = $('#txt-anamnese').val().trim();
-                const resumo = $('#txt-resumo').val().trim();
-
-                const erros = [];
-
-                if (anamnese.length < 200) {
-                    erros.push('A anamnese deve conter pelo menos 200 caracteres');
-                }
-
-                if (resumo.length === 0) {
-                    erros.push('O resumo do atendimento é obrigatório');
-                }
-
-                return {
-                    validos: erros.length === 0,
-                    mensagem: erros.join('<br>')
-                };
-            }
-
-            function coletarDadosFormulario() {
-                // Dados básicos
-                const formData = {
-                    anamnese: $('#txt-anamnese').val().trim(),
-                    resumo: $('#txt-resumo').val().trim(),
-                    prescricao: {
-                        tipo: $('#tipo-prescricao').val(),
-                        medicamentos: coletarMedicamentos()
-                    },
-                    exames: {
-                        indicacao: $('#txt-indicacao').val().trim(),
-                        lista: coletarExames()
-                    },
-                    atestado: {
-                        necessidade: $('#txt-necessidade').val().trim(),
-                        dias: $('#num-dias').val(),
-                        cid: $('#txt-cid').val().trim()
-                    },
-                    anexos: coletarAnexos()
-                };
-
-                return formData;
-            }
-
-            function coletarMedicamentos() {
-                const medicamentos = [];
-
-                $('.prescription-item').each(function () {
-                    const $item = $(this);
-                    const medicamento = {
-                        nome: $item.find('input[name="medicamento[]"]').val(),
-                        posologia: $item.find('input[name="posologia[]"]').val(),
-                        via: $item.find('input[name="via[]"]').val(),
-                        quantidade: $item.find('input[name="quantidade[]"]').val(),
-                        cid: $item.find('input[name="cid[]"]').val()
-                    };
-
-                    // Aplicar trim() apenas se o valor existir
-                    Object.keys(medicamento).forEach(key => {
-                        if (medicamento[key] !== undefined && medicamento[key] !== null) {
-                            medicamento[key] = medicamento[key].toString().trim();
-                        } else {
-                            medicamento[key] = '';
-                        }
-                    });
-
-                    // Só adiciona se houver pelo menos o nome do medicamento
-                    if (medicamento.nome) {
-                        medicamentos.push(medicamento);
-                    }
-                });
-
-                return medicamentos;
-            }
-
-            function coletarExames() {
-                const exames = [];
-
-                $('input[name="exame[]"]').each(function () {
-                    const exame = $(this).val().trim();
-                    if (exame) exames.push(exame);
-                });
-
-                return exames;
-            }
-
-            function coletarAnexos() {
-                const anexos = [];
-
-                $('#files-container .file-item').each(function () {
-                    anexos.push($(this).find('span').text().trim());
-                });
-
-                return anexos;
-            }
-
-            // Função de simulação de envio AJAX (substituir pela real depois)
-            function enviarDadosAtendimento(formData) {
-                return new Promise((resolve, reject) => {
-                    console.log('Simulando envio AJAX...', formData);
-
-                    // Simula tempo de requisição (1-2s)
-                    const tempoAleatorio = Math.random() * 1000 + 1000;
-
-                    setTimeout(() => {
-                        // Simula 90% de chance de sucesso
-                        if (Math.random() > 0.1) {
-                            console.log('Simulação: Dados enviados com sucesso!');
-                            resolve({ success: true });
-                        } else {
-                            console.log('Simulação: Erro no envio!');
-                            reject(new Error('Erro simulado no servidor'));
-                        }
-                    }, tempoAleatorio);
-                });
-            }
-        });
-
-        function updateDateTime() {
-            const now = new Date();
-            const options = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false
-            };
-            document.getElementById('currentDateTime').textContent = now.toLocaleDateString('pt-BR', options);
-        }
-
-        // Atualizar imediatamente e depois a cada segundo
-        updateDateTime();
-        setInterval(updateDateTime, 1000);
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="js/ficha.js"></script>
 </body>
 
 </html>
